@@ -1,0 +1,61 @@
+{
+  "name": "dnd-visual-editor",
+  "version": "0.0.1",
+  "description": "Drag and Drop Visual Editor for Nuxt",
+  "repository": "pxtchphrxse/nuxt-dnd-visual-editor",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.1.5",
+    "@nuxt/kit": "^3.13.2",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "defu": "^6.1.4",
+    "pathe": "^1.1.2",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^1.5.0",
+    "@nuxt/eslint-config": "^0.5.7",
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.13.2",
+    "@nuxt/test-utils": "^3.14.2",
+    "@tailwindcss/forms": "^0.5.9",
+    "@types/node": "latest",
+    "@types/uuid": "^10.0.0",
+    "autoprefixer": "^10.4.20",
+    "changelogen": "^0.5.7",
+    "eslint": "^9.11.0",
+    "husky": "^9.1.6",
+    "nuxt": "^3.13.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "latest",
+    "vitest": "^2.1.1",
+    "vue-tsc": "^2.1.6"
+  }
+}
