@@ -6,6 +6,7 @@ import type { ModuleOptions } from './module'
 export default async function installTailwind(moduleOptions: ModuleOptions, nuxt = useNuxt(), resolve = createResolver(import.meta.url).resolve) {
   const runtimeDir = resolve('./runtime')
 
+  // 1. add tailwindcss config
   const configTemplate = addTemplate({
     filename: 'dnd-visual-editor-tailwind.config.cjs',
     write: true,
@@ -64,6 +65,14 @@ export default async function installTailwind(moduleOptions: ModuleOptions, nuxt
   else {
     twConfigPaths.push(...userTwConfigPath)
   }
+
+  // 2. add css file
+  const cssTemplate = addTemplate({
+    filename: 'dnd-visual-editor-tailwind.css',
+    src: resolve('main.css'),
+    write: true,
+  })
+  nuxt.options.css.push(cssTemplate.dst)
 
   // 3. install module
   await installModule('@nuxtjs/tailwindcss', defu({

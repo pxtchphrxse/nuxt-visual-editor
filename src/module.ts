@@ -1,4 +1,4 @@
-import { defineNuxtModule, addPlugin, createResolver, addComponentsDir } from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, createResolver, addComponent, installModule } from '@nuxt/kit'
 import installTailwind from './tailwind'
 
 export interface ImageProviders {
@@ -46,10 +46,20 @@ export default defineNuxtModule<ModuleOptions>({
 
     const runtimeDir = resolve('./runtime')
     nuxt.options.build.transpile.push(runtimeDir)
-    nuxt.options.build.transpile.push('@headlessui/vue', '@heroicons/vue')
+    nuxt.options.build.transpile.push('@heroicons/vue')
 
     await installTailwind(options, nuxt, resolve)
+    await installModule('nuxt-headlessui')
 
-    addComponentsDir({ path: resolve('./runtime/components'), global: true })
+    // add preview images for default components
+    nuxt.hook('nitro:config', async (nitroConfig) => {
+      nitroConfig.publicAssets ||= []
+      nitroConfig.publicAssets.push({
+        dir: resolve('./runtime/public'),
+        maxAge: 60 * 60 * 24 * 365, // 1 year
+      })
+    })
+
+    addComponent({ filePath: resolve('./runtime/components/VisualEditor.vue'), name: 'VisualEditor' })
   },
 })

@@ -1,7 +1,9 @@
-import { reactive } from 'vue'
+import { inject, onMounted, provide, reactive, type Reactive } from 'vue'
+import { v4 as uuid } from 'uuid'
 import { Designer, type DesignerState } from '../utils/designer'
+import defaultComponents from '../utils/default-components'
 
-export const useDesignerState = () => {
+export const useInitDesigner = () => {
   const state = reactive<DesignerState>({
     menuPreview: false,
     menuLeft: true,
@@ -19,8 +21,8 @@ export const useDesignerState = () => {
     borderRadiusBottomRight: null,
     // border radius / end
     // hyperlink / start
-    elementContainsHyperlink: null,
-    hyperlinkAbility: null,
+    elementContainsHyperlink: false,
+    hyperlinkAbility: false,
     hyperlinkInput: null,
     hyperlinkMessage: null,
     hyperlinkError: null,
@@ -60,10 +62,27 @@ export const useDesignerState = () => {
     components: [],
     basePrimaryImage: null,
     highlightedImage: null,
-    fetchedComponents: [],
-    preview: [],
+    fetchedComponents: { isError: false, isLoading: true, components: [] },
+    preview: '',
+    showPreview: false,
   })
-  const designer = new Designer(state)
+  onMounted(() => {
+    setTimeout(() => {
+      state.fetchedComponents.components = defaultComponents.map(c => ({ ...c, id: uuid() }))
+      state.fetchedComponents.isLoading = false
+    }, 500)
+  })
+  provide('designerState', state)
 
-  return designer
+  const designer = new Designer(state)
+  provide('designer', designer)
+
+  return { state, designer }
+}
+
+export const useDesigner = () => {
+  const state = inject<Reactive<DesignerState>>('designerState')!
+  const designer = inject<Designer>('designer')!
+
+  return { state, designer }
 }

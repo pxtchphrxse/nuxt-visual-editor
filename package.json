@@ -30,13 +30,13 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.1.5",
     "@nuxt/kit": "^3.13.2",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "defu": "^6.1.4",
     "pathe": "^1.1.2",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.5.0",
@@ -52,6 +52,7 @@
     "eslint": "^9.11.0",
     "husky": "^9.1.6",
     "nuxt": "^3.13.0",
+    "nuxt-headlessui": "^1.2.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
     "typescript": "latest",

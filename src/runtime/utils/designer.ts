@@ -1,4 +1,4 @@
-import { nextTick, ref } from 'vue'
+import { nextTick, type Reactive } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import tailwindColors from './tailwaind-colors'
 import tailwindOpacities from './tailwind-opacities'
@@ -10,6 +10,9 @@ import tailwindBorderStyleWidthPlusColor from './tailwind-border-style-width-col
 
 export interface Component {
   id: string
+  name: string
+  category: string
+  imageSrc: string
   html: string
 }
 
@@ -29,8 +32,8 @@ export interface DesignerState {
   borderRadiusTopRight: string | null
   borderRadiusBottomleft: string | null
   borderRadiusBottomRight: string | null
-  elementContainsHyperlink: unknown
-  hyperlinkAbility: boolean | null
+  elementContainsHyperlink: boolean
+  hyperlinkAbility: boolean
   hyperlinkInput: string | null
   hyperlinkMessage: string | null
   hyperlinkError: string | null
@@ -65,11 +68,12 @@ export interface DesignerState {
   components: Component[]
   basePrimaryImage: string | null
   highlightedImage: Image | null
-  fetchedComponents: unknown[]
-  preview: string[]
+  fetchedComponents: { isLoading: boolean, isError: boolean, components: Component[] }
+  preview: string
+  showPreview: boolean
 }
 
-type modifyElementCSS = keyof Pick<DesignerState, 'fontWeight' | 'fontFamily' | 'fontStyle' | 'fontVerticalPadding' | 'fontHorizontalPadding' | 'borderStyle' | 'borderWidth' | 'borderColor' | 'borderRadiusGlobal' | 'borderRadiusTopLeft' | 'borderRadiusTopRight' | 'borderRadiusBottomleft' | 'borderRadiusBottomRight' | 'backgroundColor' | 'textColor' | 'backgroundOpacity' | 'opacity'>
+type modifyElementCSS = keyof Pick<DesignerState, 'fontWeight' | 'fontFamily' | 'fontStyle' | 'fontVerticalPadding' | 'fontHorizontalPadding' | 'borderStyle' | 'borderWidth' | 'borderColor' | 'borderRadiusGlobal' | 'borderRadiusTopLeft' | 'borderRadiusTopRight' | 'borderRadiusBottomleft' | 'borderRadiusBottomRight' | 'backgroundColor' | 'textColor' | 'backgroundOpacity' | 'opacity' | 'fontVerticalMargin' | 'fontHorizontalMargin'>
 
 export class Designer {
   elementsWithListeners
@@ -80,7 +84,7 @@ export class Designer {
   observer: MutationObserver | undefined
   textContentVueModel: string | undefined
 
-  constructor(private store: DesignerState) {
+  constructor(private store: Reactive<DesignerState>) {
     /**
      * Initialize an instance variable 'elementsWithListeners' as a WeakSet.
      *
@@ -94,7 +98,7 @@ export class Designer {
      * This helps in managing the memory usage and performance of the application.
      */
     this.elementsWithListeners = new WeakSet()
-    this.nextTick = nextTick()
+    this.nextTick = nextTick
 
     this.timer = null
     this.backgroundColors = tailwindColors.backgroundColors()
@@ -164,7 +168,7 @@ export class Designer {
     this.store.element = null
   }
 
-  #modifyElementCSS(selectedCSS: string, CSSArray: string[], mutationName: modifyElementCSS) {
+  #modifyElementCSS(selectedCSS: string | undefined, CSSArray: string[], mutationName: modifyElementCSS) {
     if (this.store.element === null) {
       return
     }
@@ -203,7 +207,7 @@ export class Designer {
     return currentCSS
   }
 
-  handleFontWeight(userSelectedFontWeight: string) {
+  handleFontWeight(userSelectedFontWeight?: string) {
     this.#modifyElementCSS(
       userSelectedFontWeight,
       tailwindFontStyles.fontWeight,
@@ -211,7 +215,7 @@ export class Designer {
     )
   }
 
-  handleFontFamily(userSelectedFontFamily: string) {
+  handleFontFamily(userSelectedFontFamily?: string) {
     this.#modifyElementCSS(
       userSelectedFontFamily,
       tailwindFontStyles.fontFamily,
@@ -219,7 +223,7 @@ export class Designer {
     )
   }
 
-  handleFontStyle(userSelectedFontStyle: string) {
+  handleFontStyle(userSelectedFontStyle?: string) {
     this.#modifyElementCSS(
       userSelectedFontStyle,
       tailwindFontStyles.fontStyle,
@@ -227,7 +231,7 @@ export class Designer {
     )
   }
 
-  handleVerticalPadding(userSelectedVerticalPadding: string) {
+  handleVerticalPadding(userSelectedVerticalPadding?: string) {
     this.#modifyElementCSS(
       userSelectedVerticalPadding,
       tailwindPaddingAndMargin.verticalPadding,
@@ -235,7 +239,7 @@ export class Designer {
     )
   }
 
-  handleHorizontalPadding(userSelectedHorizontalPadding: string) {
+  handleHorizontalPadding(userSelectedHorizontalPadding?: string) {
     this.#modifyElementCSS(
       userSelectedHorizontalPadding,
       tailwindPaddingAndMargin.horizontalPadding,
@@ -243,7 +247,23 @@ export class Designer {
     )
   }
 
-  handleBorderStyle(borderStyle: string) {
+  handleVerticalMargin(userSelectedVerticalMargin?: string) {
+    this.#modifyElementCSS(
+      userSelectedVerticalMargin,
+      tailwindPaddingAndMargin.verticalMargin,
+      'fontVerticalMargin',
+    )
+  }
+
+  handleHorizontalMargin(userSelectedHorizontalMargin?: string) {
+    this.#modifyElementCSS(
+      userSelectedHorizontalMargin,
+      tailwindPaddingAndMargin.horizontalMargin,
+      'fontHorizontalMargin',
+    )
+  }
+
+  handleBorderStyle(borderStyle?: string) {
     this.#modifyElementCSS(
       borderStyle,
       tailwindBorderStyleWidthPlusColor.borderStyle,
@@ -251,7 +271,7 @@ export class Designer {
     )
   }
 
-  handleBorderWidth(borderWidth: string) {
+  handleBorderWidth(borderWidth?: string) {
     this.#modifyElementCSS(
       borderWidth,
       tailwindBorderStyleWidthPlusColor.borderWidth,
@@ -259,7 +279,7 @@ export class Designer {
     )
   }
 
-  handleBorderColor(borderColor: string) {
+  handleBorderColor(borderColor?: string) {
     this.#modifyElementCSS(
       borderColor,
       tailwindBorderStyleWidthPlusColor.borderColor,
@@ -267,7 +287,7 @@ export class Designer {
     )
   }
 
-  handleBorderRadiusGlobal(borderRadiusGlobal: string) {
+  handleBorderRadiusGlobal(borderRadiusGlobal?: string) {
     this.#modifyElementCSS(
       borderRadiusGlobal,
       tailwindBorderRadius.roundedGlobal,
@@ -275,7 +295,7 @@ export class Designer {
     )
   }
 
-  handleBorderRadiusTopLeft(borderRadiusTopLeft: string) {
+  handleBorderRadiusTopLeft(borderRadiusTopLeft?: string) {
     this.#modifyElementCSS(
       borderRadiusTopLeft,
       tailwindBorderRadius.roundedTopLeft,
@@ -283,7 +303,7 @@ export class Designer {
     )
   }
 
-  handleBorderRadiusTopRight(borderRadiusTopRight: string) {
+  handleBorderRadiusTopRight(borderRadiusTopRight?: string) {
     this.#modifyElementCSS(
       borderRadiusTopRight,
       tailwindBorderRadius.roundedTopRight,
@@ -291,7 +311,7 @@ export class Designer {
     )
   }
 
-  handleBorderRadiusBottomleft(borderRadiusBottomleft: string) {
+  handleBorderRadiusBottomleft(borderRadiusBottomleft?: string) {
     this.#modifyElementCSS(
       borderRadiusBottomleft,
       tailwindBorderRadius.roundedBottomLeft,
@@ -299,7 +319,7 @@ export class Designer {
     )
   }
 
-  handleBorderRadiusBottomRight(borderRadiusBottomRight: string) {
+  handleBorderRadiusBottomRight(borderRadiusBottomRight?: string) {
     this.#modifyElementCSS(
       borderRadiusBottomRight,
       tailwindBorderRadius.roundedBottomRight,
@@ -307,7 +327,7 @@ export class Designer {
     )
   }
 
-  handleFontSize(userSelectedFontSize: string) {
+  handleFontSize(userSelectedFontSize?: string) {
     if (this.store.element === null) return
     let fontBase = tailwindFontSizes.fontBase.find((size) => {
       return this.store.element!.classList.contains(size)
@@ -380,7 +400,7 @@ export class Designer {
     }
   }
 
-  handleCustomBackgroundColor(userSelectedColor: string, enabledCustomColor?: boolean) {
+  handleCustomBackgroundColor(userSelectedColor?: string, enabledCustomColor?: boolean) {
     if (this.store.element === null) return
     // if user is selecting a custom HEX color
     if (userSelectedColor === undefined && enabledCustomColor === undefined) {
@@ -401,12 +421,12 @@ export class Designer {
     }
 
     // if user is selecting a custom HEX color
-    if (enabledCustomColor === true) {
+    if (enabledCustomColor === true && userSelectedColor) {
       this.store.element.style.backgroundColor = userSelectedColor
     }
   }
 
-  handleCustomTextColor(userSelectedColor: string, enabledCustomColor?: boolean) {
+  handleCustomTextColor(userSelectedColor?: string, enabledCustomColor?: boolean) {
     if (this.store.element === null) return
     // if user is selecting a custom HEX color
     if (userSelectedColor === undefined && enabledCustomColor === undefined) {
@@ -427,12 +447,21 @@ export class Designer {
     }
 
     // if user is selecting a custom HEX color
-    if (enabledCustomColor === true) {
+    if (enabledCustomColor === true && userSelectedColor) {
       this.store.element.style.color = userSelectedColor
     }
   }
 
-  handleBackgroundColor(userSelectedColor: string) {
+  currentClasses() {
+    if (!this.store.element) return
+    // convert classList to array
+    const classListArray = Array.from(this.store.element.classList)
+
+    // commit array to store
+    this.store.currentClasses = classListArray
+  }
+
+  handleBackgroundColor(userSelectedColor?: string) {
     this.#modifyElementCSS(
       userSelectedColor,
       this.backgroundColors,
@@ -440,7 +469,7 @@ export class Designer {
     )
   }
 
-  handleTextColor(userSelectedColor: string) {
+  handleTextColor(userSelectedColor?: string) {
     this.#modifyElementCSS(userSelectedColor, this.textColors, 'textColor')
   }
 
@@ -456,7 +485,7 @@ export class Designer {
     this.store.textColorCustom = null
   }
 
-  handleBackgroundOpacity(opacity: string) {
+  handleBackgroundOpacity(opacity?: string) {
     this.#modifyElementCSS(
       opacity,
       tailwindOpacities.backgroundOpacities,
@@ -464,7 +493,7 @@ export class Designer {
     )
   }
 
-  handleOpacity(opacity: string) {
+  handleOpacity(opacity?: string) {
     this.#modifyElementCSS(opacity, tailwindOpacities.opacities, 'opacity')
   }
 
@@ -511,7 +540,7 @@ export class Designer {
       this.store.element = e.currentTarget as HTMLElement
       if (this.store.element === null) return
 
-      // this.handleDesignerMethods()
+      this.handleDesignerMethods()
     })
   }
 
@@ -543,13 +572,13 @@ export class Designer {
   }
 
   saveCurrentDesignWithTimer = () => {
+    this.nextTick(this.previewCurrentDesign)
     setTimeout(() => {
       this.observePlusSyncHTMLElements()
-    }, 1000)
+    }, 250)
   }
 
   observePlusSyncHTMLElements = async () => {
-    console.log('køre observe....')
     if (document.querySelector('[hovered]') !== null) {
       document.querySelector('[hovered]')!.removeAttribute('hovered')
     }
@@ -594,7 +623,7 @@ export class Designer {
     this.store.menuRight = false
 
     // Deep clone clone component
-    const clonedComponent = structuredClone(componentObject)
+    const clonedComponent = { ...componentObject }
 
     // Create a DOMParser instance
     const parser = new DOMParser()
@@ -686,7 +715,6 @@ export class Designer {
       && element.tagName.toLowerCase() !== 'img'
       && Number(element.textContent?.length) === 0
     ) {
-      console.log('kom her')
       element.classList.add('h-7')
       element.classList.add('min-h-[7]')
       element.classList.add('bg-red-50')
@@ -709,30 +737,28 @@ export class Designer {
   }
 
   async changeText(event: Event) {
-    await this.nextTick
-
-    const textContentElementClone = (event.target as HTMLInputElement).value
+    const text = (event.target as HTMLInputElement).value
 
     // Convert newline characters to <br> tags when saving
-    const textContentWithBr = textContentElementClone.replaceAll(
+    const textContentWithBr = text.replaceAll(
       /\r?\n/g,
       '<br>',
     )
 
     // Update both the displayed content and the model
     this.textContentVueModel = textContentWithBr
+    this.store.textAreaVueModel = textContentWithBr.replaceAll('<br>', '\r\n')
     this.store.element!.innerHTML = textContentWithBr
   }
 
   previewCurrentDesign() {
-    this.store.component = null
-    this.store.element = null
+    // this.store.component = null
+    // this.store.element = null
 
-    const addedHtmlComponents = ref<string[]>([])
-    // preview current design in external browser tab
+    const addedHtmlComponents: string[] = []
     // iterate over each top-level section component
     document
-      .querySelectorAll('section:not(section section)')
+      .querySelectorAll('.visual-editor section')
       .forEach((section) => {
         // remove hovered and selected
 
@@ -742,18 +768,35 @@ export class Designer {
         }
 
         // remove selected
-        if (section.querySelector('[selected]') !== null) {
+        const selected = section.querySelector('[selected]')
+        if (selected !== null) {
           section.querySelector('[selected]')!.removeAttribute('selected')
         }
 
         // push outer html into the array
-        addedHtmlComponents.value.push(section.outerHTML)
+        if (section.hasAttribute('data-componentid')) {
+          addedHtmlComponents.push(section.outerHTML)
+        }
+
+        // reselect
+        if (selected !== null) {
+          selected.setAttribute('selected', '')
+        }
       })
 
-    this.store.preview = addedHtmlComponents.value
+    this.store.preview = addedHtmlComponents.join(' ')
+  }
 
-    // set added html components back to empty array
-    addedHtmlComponents.value = []
+  parseComponents(html: string) {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+    const components: Component[] = []
+    doc.querySelectorAll('section').forEach((section) => {
+      const id = section.getAttribute('data-componentid')
+      if (!id) return
+      components.push({ id, html: section.outerHTML, name: '', imageSrc: '', category: '' })
+    })
+    this.store.components = components
   }
 
   updateBasePrimaryImage() {
@@ -761,8 +804,9 @@ export class Designer {
       this.store.highlightedImage
       && this.store.highlightedImage.file !== null
     ) {
-      // this.handleDesignerMethods()
+      this.handleDesignerMethods()
       this.store.basePrimaryImage = this.store.highlightedImage.file
+      ;(this.store.element as HTMLImageElement).src = this.store.highlightedImage.file
     }
   }
 
@@ -784,7 +828,7 @@ export class Designer {
     this.store.basePrimaryImage = null
   }
 
-  #addHyperlinkToElement(hyperlinkEnable: boolean, urlInput: string, openHyperlinkInNewTab: boolean) {
+  #addHyperlinkToElement(hyperlinkEnable?: boolean, urlInput?: string, openHyperlinkInNewTab?: boolean) {
     const parentHyperlink = this.store.element!.closest('a')
     const hyperlink = this.store.element!.querySelector('a')
 
@@ -794,13 +838,13 @@ export class Designer {
     const urlRegex
       = /^https?:\/\/(?:www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-\w()@:%+.~#?&/=]*$/
 
-    const isValidURL = ref(true)
+    let isValidURL = true
 
-    if (hyperlinkEnable === true && urlInput !== null) {
-      isValidURL.value = urlRegex.test(urlInput)
+    if (hyperlinkEnable === true && urlInput) {
+      isValidURL = urlRegex.test(urlInput)
     }
 
-    if (isValidURL.value === false) {
+    if (isValidURL === false) {
       this.store.hyperlinkMessage = null
       this.store.hyperlinkError = 'URL is not valid'
       return
@@ -883,7 +927,7 @@ export class Designer {
     this.store.hyperlinkError = null
   }
 
-  handleHyperlink(hyperlinkEnable: boolean, urlInput: string, openHyperlinkInNewTab: boolean) {
+  handleHyperlink(hyperlinkEnable?: boolean, urlInput?: string, openHyperlinkInNewTab?: boolean) {
     this.store.hyperlinkAbility = true
 
     const parentHyperlink = this.store.element!.closest('a')
@@ -917,5 +961,64 @@ export class Designer {
       urlInput,
       openHyperlinkInNewTab,
     )
+  }
+
+  handleDesignerMethods() {
+    if (!this.store.element) return
+
+    // save current design
+    this.saveCurrentDesignWithTimer()
+
+    // invoke methods
+    // handle custom URL
+    this.handleHyperlink()
+    // handle opacity
+    this.handleOpacity()
+    // handle BG opacity
+    this.handleBackgroundOpacity()
+    // displayed image
+    this.showBasePrimaryImage()
+    // border style
+    this.handleBorderStyle()
+    // border width
+    this.handleBorderWidth()
+    // border color
+    this.handleBorderColor()
+    // border radius
+    this.handleBorderRadiusGlobal()
+    // border radius
+    this.handleBorderRadiusTopLeft()
+    // border radius
+    this.handleBorderRadiusTopRight()
+    // border radius
+    this.handleBorderRadiusBottomleft()
+    // border radius
+    this.handleBorderRadiusBottomRight()
+    // handle font size
+    this.handleFontSize()
+    // handle font weight
+    this.handleFontWeight()
+    // handle font family
+    this.handleFontFamily()
+    // handle font style
+    this.handleFontStyle()
+    // handle vertical padding
+    this.handleVerticalPadding()
+    // handle horizontal padding
+    this.handleHorizontalPadding()
+    // handle vertical margin
+    this.handleVerticalMargin()
+    // handle horizontal margin
+    this.handleHorizontalMargin()
+    // handle color
+    this.handleBackgroundColor()
+    this.handleCustomBackgroundColor()
+
+    this.handleTextColor()
+    this.handleCustomTextColor()
+    // handle classes
+    this.currentClasses()
+    // handle text content
+    this.handleTextAreaContent()
   }
 }
