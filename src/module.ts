@@ -20,7 +20,7 @@ export interface ModuleOptions {
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'dnd-visual-editor',
+    name: 'nuxt-visual-editor',
     configKey: 'visualEditor',
     compatibility: {
       nuxt: '>=3.0.0',

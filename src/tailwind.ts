@@ -8,7 +8,7 @@ export default async function installTailwind(moduleOptions: ModuleOptions, nuxt
 
   // 1. add tailwindcss config
   const configTemplate = addTemplate({
-    filename: 'dnd-visual-editor-tailwind.config.cjs',
+    filename: 'nuxt-visual-editor-tailwind.config.cjs',
     write: true,
     getContents: () => `
       const defaultTheme = require('tailwindcss/defaultTheme');
@@ -68,7 +68,7 @@ export default async function installTailwind(moduleOptions: ModuleOptions, nuxt
 
   // 2. add css file
   const cssTemplate = addTemplate({
-    filename: 'dnd-visual-editor-tailwind.css',
+    filename: 'nuxt-visual-editor-tailwind.css',
     src: resolve('main.css'),
     write: true,
   })

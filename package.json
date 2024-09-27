@@ -1,8 +1,8 @@
 {
-  "name": "dnd-visual-editor",
-  "version": "0.0.1",
-  "description": "Drag and Drop Visual Editor for Nuxt",
-  "repository": "pxtchphrxse/nuxt-dnd-visual-editor",
+  "name": "nuxt-visual-editor",
+  "version": "0.1.0",
+  "description": "Visual Editor for Nuxt",
+  "repository": "pxtchphrxse/nuxt-visual-editor",
   "license": "MIT",
   "type": "module",
   "exports": {

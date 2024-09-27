@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "dnd-visual-editor-playground",
+  "name": "nuxt-visual-editor-playground",
   "type": "module",
   "scripts": {
     "dev": "nuxi dev",
