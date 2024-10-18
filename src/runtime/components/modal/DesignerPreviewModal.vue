@@ -64,11 +64,9 @@ const firstButton = function () {
               <div
                 class="px-6 h-[6vh] flex items-center justify-between bg-myPrimaryLightGrayColor"
               >
-                <img
-                  class="h-6"
-                  src="/logo-myissue.svg"
-                  alt="Logo"
-                >
+                <h1 class="font-semibold text-xl text-gray-800">
+                  Preview
+                </h1>
                 <div
                   class="flex items-center justify-center gap-1 cursor-pointer hover:underline"
                   @click="firstButton"
