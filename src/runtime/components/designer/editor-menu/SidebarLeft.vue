@@ -33,10 +33,18 @@ watch(
     })
   }, { deep: true },
 )
+const wrapper = ref<HTMLElement>()
+const top = computed(() => {
+  return (wrapper.value?.getBoundingClientRect().top || 0) + 'px'
+})
+const left = computed(() => {
+  return (wrapper.value?.getBoundingClientRect().left || 0) + 224 + 'px'
+})
 </script>
 
 <template>
   <aside
+    ref="wrapper"
     aria-label="sidebar"
     :class="{
       'w-0': !state.menuLeft,
@@ -47,28 +55,31 @@ watch(
     @mouseleave="state.menuPreview = false"
   >
     <!-- Category - start -->
-    <div class="sticky h-full w-60 overflow-hidden">
+    <div class="h-full w-60 overflow-x-hidden overflow-y-auto">
       <nav
         aria-label="Sidebar"
-        class="h-full bg-white pt-2.5 pr-0 pb-4 pl-4"
+        class="h-full bg-white pl-4"
       >
-        <div class="flex flex-row justify-end border-b pb-3 mb-3 pr-4">
-          <div
-            class="hover:bg-myPrimaryLinkColor hover:text-white bg-gray-100 rounded-full cursor-pointer"
-            @click="
-              state.menuLeft = false;
-              state.menuPreview = false
-            "
-          >
-            <XMarkIcon class="shrink-0 w-5 h-5 m-2" />
+        <div class="sticky top-0 bg-white pt-2.5">
+          <div class="flex flex-row justify-end border-b pb-3 mb-3 pr-4">
+            <div
+              class="hover:bg-myPrimaryLinkColor hover:text-white bg-gray-100 rounded-full cursor-pointer"
+              @click="
+                state.menuLeft = false;
+                state.menuPreview = false
+              "
+            >
+              <XMarkIcon class="shrink-0 w-5 h-5 m-2" />
+            </div>
           </div>
+
+          <p class="myPrimaryParagraph font-medium pt-4 pr-4">
+            COMPONENTS
+          </p>
         </div>
 
-        <p class="myPrimaryParagraph font-medium pt-4 pr-4">
-          COMPONENTS
-        </p>
         <ul
-          class="flex flex-col pt-4 pr-0 pb-0 font-normal h-full overflow-y-auto"
+          class="flex flex-col pt-4 pr-0 pb-4 font-normal"
           @mouseover.self="state.menuPreview = false"
         >
           <li
@@ -94,8 +105,8 @@ watch(
     <!-- Preview - start -->
     <aside
       aria-label="saidebar"
-      :class="[!state.menuPreview ? '-left-[30rem]' : 'left-56']"
-      class="absolute z-10 w-[20rem] h-full duration-200 top-0 rounded-r-2xl shadow-2xl bg-gray-50"
+      :style="{ top, left: !state.menuPreview ? '-30rem' : left }"
+      class="fixed z-10 w-[20rem] duration-200 top-0 rounded-r-2xl shadow-2xl bg-gray-50"
     >
       <div class="flex flex-col gap-4 p-4 h-full font-normal">
         <p class="myPrimaryParagraph capitalize">
