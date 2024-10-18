@@ -8,6 +8,12 @@ import tailwindPaddingAndMargin from './tailwind-padding-margin'
 import tailwindBorderRadius from './tailwind-border-radius'
 import tailwindBorderStyleWidthPlusColor from './tailwind-border-style-width-color'
 
+export interface VisualEditorProps {
+  modelValue?: string
+  components?: ComponentOption[]
+  categories?: string[]
+}
+
 export interface Component {
   id: string
   name: string
@@ -16,11 +22,14 @@ export interface Component {
   html: string
 }
 
+export type ComponentOption = Omit<Component, 'id'>
+
 export interface Image {
   file: string | null
 }
 
 export interface DesignerState {
+  designerId: string
   menuPreview: boolean
   menuLeft: boolean
   menuRight: boolean
@@ -68,7 +77,7 @@ export interface DesignerState {
   components: Component[]
   basePrimaryImage: string | null
   highlightedImage: Image | null
-  fetchedComponents: { isLoading: boolean, isError: boolean, components: Component[] }
+  fetchedComponents: { components: ComponentOption[], categories: string[] }
   preview: string
   showPreview: boolean
 }
@@ -530,8 +539,8 @@ export class Designer {
       e.preventDefault()
       e.stopPropagation()
 
-      if (document.querySelector('[selected]') !== null) {
-        document.querySelector('[selected]')?.removeAttribute('selected')
+      if (document.querySelector(`#${this.store.designerId} [selected]`) !== null) {
+        document.querySelector(`#${this.store.designerId} [selected]`)?.removeAttribute('selected')
       }
 
       (e.currentTarget as HTMLElement)?.removeAttribute('hovered')
@@ -550,7 +559,7 @@ export class Designer {
    *
    */
   addClickAndHoverEvents = () => {
-    document.querySelectorAll('.visual-editor section *').forEach((element) => {
+    document.querySelectorAll(`#${this.store.designerId} section *`).forEach((element) => {
       if (
         this.elementsWithListeners
         && this.elementsWithListeners.has(element) === false
@@ -566,8 +575,8 @@ export class Designer {
       document.querySelector('[hovered]')!.removeAttribute('hovered')
     }
 
-    if (document.querySelector('[selected]') !== null) {
-      document.querySelector('[selected]')!.removeAttribute('selected')
+    if (document.querySelector(`#${this.store.designerId} [selected]`) !== null) {
+      document.querySelector(`#${this.store.designerId} [selected]`)!.removeAttribute('selected')
     }
   }
 
@@ -613,17 +622,18 @@ export class Designer {
     })
 
     // This will be executed after the DOM has been updated
-    this.store.element = document.querySelector('[selected]')
+    this.store.element = document.querySelector(`#${this.store.designerId} [selected]`)
     this.addClickAndHoverEvents()
   }
 
-  cloneCompObjForDOMInsertion(componentObject: Component) {
+  cloneCompObjForDOMInsertion(componentObject: ComponentOption) {
     // Hide slider and right menu
     this.store.menuPreview = false
     this.store.menuRight = false
 
+    const uuid = uuidv4()
     // Deep clone clone component
-    const clonedComponent = { ...componentObject }
+    const clonedComponent = { ...componentObject, id: uuid }
 
     // Create a DOMParser instance
     const parser = new DOMParser()
@@ -634,12 +644,9 @@ export class Designer {
     // Add the component id to the section element
     const section = doc.querySelector('section')
     if (section) {
-      // Generate a unique ID using uuidv4() and assign it to the section
-      section.dataset.componentid = uuidv4()
+      // assign uuid to section
+      section.dataset.componentid = uuid
     }
-
-    // Update the clonedComponent id with the newly generated unique ID
-    clonedComponent.id = section!.dataset.componentid!
 
     // Update the HTML content of the clonedComponent with the modified HTML
     clonedComponent.html = doc.querySelector('section')!.outerHTML
@@ -654,7 +661,7 @@ export class Designer {
 
   getCurrentIndex(event: Event) {
     // Declare container of components and current event
-    const allComponents = document.querySelector('#pagebuilder')!.children
+    const allComponents = document.querySelector(`#${this.store.designerId}`)!.children
     const currentComponent = (event.target as HTMLElement).closest('div[data-draggable="true"]')
     // Get index of chosen event
     const currentIndex = Array.from(allComponents).indexOf(currentComponent!)
@@ -688,7 +695,7 @@ export class Designer {
     )
     // Follow component to new location
     document
-      .querySelector('#pagebuilder')!
+      .querySelector(`#${this.store.designerId}`)!
       .children[currentIndex + 1 * dir].scrollIntoView({ behavior: 'smooth' })
     // end of method "moveComponent"
   }
@@ -758,7 +765,7 @@ export class Designer {
     const addedHtmlComponents: string[] = []
     // iterate over each top-level section component
     document
-      .querySelectorAll('.visual-editor section')
+      .querySelectorAll(`#${this.store.designerId} section`)
       .forEach((section) => {
         // remove hovered and selected
 
@@ -768,9 +775,9 @@ export class Designer {
         }
 
         // remove selected
-        const selected = section.querySelector('[selected]')
+        const selected = section.querySelector(`#${this.store.designerId} [selected]`)
         if (selected !== null) {
-          section.querySelector('[selected]')!.removeAttribute('selected')
+          section.querySelector(`#${this.store.designerId} [selected]`)!.removeAttribute('selected')
         }
 
         // push outer html into the array

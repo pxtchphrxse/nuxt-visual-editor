@@ -30,9 +30,9 @@ const isHeadingElement = computed(() => {
     @mouseleave="designer.previewCurrentDesign"
   >
     <div class="h-full w-80 bg-white">
-      <div class="h-screen flex flex-col">
+      <div class="flex flex-col overflow-y-auto h-full">
         <div
-          class="flex flex-row justify-between pt-2.5 pr-4 pl-4 items-center mb-3"
+          class="flex flex-row justify-between pt-2.5 pr-4 pl-4 items-center mb-3 sticky top-0 bg-white z-10"
         >
           <div
             class="hover:bg-myPrimaryLinkColor hover:text-white bg-gray-100 rounded-full cursor-pointer"
@@ -46,7 +46,7 @@ const isHeadingElement = computed(() => {
           </p>
         </div>
 
-        <div class="mb-4 overflow-y-scroll md:pb-24 pb-12">
+        <div class="mb-4">
           <div v-show="isHeadingElement">
             <article>
               <ImageEditor />
@@ -84,7 +84,7 @@ const isHeadingElement = computed(() => {
           <!--     <DeleteElement /> -->
           <!--   </div> -->
           <!-- </article> -->
-          <article class="min-h-[20em]" />
+          <!-- <article class="min-h-[20em]" /> -->
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, useId, watch } from 'vue'
 import { useInitDesigner } from '../composables/useDesigner'
+import type { VisualEditorProps } from '../utils/designer'
 import SidebarLeft from './designer/editor-menu/SidebarLeft.vue'
 import MainEditor from './designer/editor-menu/MainEditor.vue'
 import SidebarRight from './designer/editor-menu/SidebarRight.vue'
-import Spinner from './loaders/Spinner.vue'
 import DesignerPreviewModal from './modal/DesignerPreviewModal.vue'
 import Preview from './designer/Preview.vue'
 import { provideHeadlessUseId } from '#imports'
@@ -12,8 +12,9 @@ import { provideHeadlessUseId } from '#imports'
 // Use SSR-safe IDs for Headless UI
 provideHeadlessUseId(() => useId())
 
-const { state, designer } = useInitDesigner()
-const props = defineProps<{ modelValue?: string }>()
+const designerId = useId()
+const props = defineProps<VisualEditorProps>()
+const { state, designer } = useInitDesigner(designerId!, props.components, props.categories)
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 
 // parse once on mounted only in case of when modelValue updated a DOM reference also updated which will discontinuity in editor-menu
@@ -30,7 +31,7 @@ watch(() => state.preview, (value) => {
 </script>
 
 <template>
-  <div class="visual-editor">
+  <div class="visual-editor h-full">
     <DesignerPreviewModal
       :show="state.showPreview"
       @first-designer-preview-modal-button-function="state.showPreview = false"
@@ -38,27 +39,26 @@ watch(() => state.preview, (value) => {
       <Preview />
     </DesignerPreviewModal>
     <div
-      class="w-full inset-x-0 h-[94vh] lg:pt-0 pt-0-z-10 bg-white overflow-x-scroll"
+      class="w-full inset-x-0 h-full lg:pt-0 pt-0-z-10 bg-white overflow-x-scroll"
     >
       <div class="relative h-full flex">
         <SidebarLeft />
         <MainEditor />
         <SidebarRight />
       </div>
-      <Spinner v-if="state.fetchedComponents.isLoading" />
     </div>
   </div>
 </template>
 
 <style>
-#pagebuilder a {
+.pagebuilder a {
   cursor: default;
 }
-#pagebuilder [selected] {
+.pagebuilder [selected] {
   outline: rgb(185, 16, 16) dashed 4px !important;
   outline-offset: -2px !important;
 }
-#pagebuilder [hovered] {
+.pagebuilder [hovered] {
   outline: rgb(0, 140, 14, 1) dashed 4px !important;
   outline-offset: -2px !important;
 }
