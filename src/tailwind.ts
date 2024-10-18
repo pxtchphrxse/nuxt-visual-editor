@@ -69,7 +69,7 @@ export default async function installTailwind(moduleOptions: ModuleOptions, nuxt
   // 2. add css file
   const cssTemplate = addTemplate({
     filename: 'nuxt-visual-editor-tailwind.css',
-    src: resolve('main.css'),
+    src: resolve(runtimeDir, './main.css'),
     write: true,
   })
   nuxt.options.css.push(cssTemplate.dst)
