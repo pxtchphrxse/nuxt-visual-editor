@@ -65,10 +65,10 @@ const deselectCurrentComponent = function () {
       </div>
     </div>
     <Draggable
-      id="pagebuilder"
+      :id="state.designerId"
       :list="state.components"
       animation="200"
-      class="bg-white grow overflow-y-auto"
+      class="pagebuilder bg-white grow overflow-y-auto"
       drag-class="opacity-0"
       group="components"
       handle=".cursor-grab"

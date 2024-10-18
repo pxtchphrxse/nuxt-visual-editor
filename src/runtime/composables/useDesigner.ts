@@ -1,10 +1,11 @@
-import { inject, onMounted, provide, reactive, type Reactive } from 'vue'
-import { v4 as uuid } from 'uuid'
-import { Designer, type DesignerState } from '../utils/designer'
+import { inject, provide, reactive, unref, type MaybeRef, type Reactive } from 'vue'
+import { Designer, type ComponentOption, type DesignerState } from '../utils/designer'
 import defaultComponents from '../utils/default-components'
+import defaultCategories from '../utils/default-categories'
 
-export const useInitDesigner = () => {
+export const useInitDesigner = (designerId: string, components: MaybeRef<ComponentOption[]> = defaultComponents, categories: MaybeRef<string[]> = defaultCategories) => {
   const state = reactive<DesignerState>({
+    designerId,
     menuPreview: false,
     menuLeft: true,
     menuRight: true,
@@ -62,15 +63,9 @@ export const useInitDesigner = () => {
     components: [],
     basePrimaryImage: null,
     highlightedImage: null,
-    fetchedComponents: { isError: false, isLoading: true, components: [] },
+    fetchedComponents: { components: unref(components), categories: unref(categories) },
     preview: '',
     showPreview: false,
-  })
-  onMounted(() => {
-    setTimeout(() => {
-      state.fetchedComponents.components = defaultComponents.map(c => ({ ...c, id: uuid() }))
-      state.fetchedComponents.isLoading = false
-    }, 500)
   })
   provide('designerState', state)
 
