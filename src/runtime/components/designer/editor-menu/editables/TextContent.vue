@@ -59,12 +59,14 @@ watch(getElementInnerHTML, (newElementInnerHTML) => {
     <div class="block px-4 ease-linear duration-200 bg-white">
       <label class="myPrimaryInputLabel"> Text content </label>
 
-      <textarea
-        :value="designer.decodeHTML(state.textAreaVueModel??'')"
-        rows="12"
-        class="myPrimaryTextArea"
-        @input="designer.changeText"
-      />
+      <ClientOnly fallback-tag="textarea">
+        <textarea
+          :value="designer.decodeHTML(state.textAreaVueModel??'')"
+          rows="12"
+          class="myPrimaryTextArea"
+          @input="designer.changeText"
+        />
+      </ClientOnly>
       <!-- @input="designer.changeText" -->
       <!-- v-html="textContentVueModel" -->
     </div>

@@ -6,7 +6,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useDesigner } from '../../../composables/useDesigner'
-import type { Component } from '../../../utils/designer'
+import type { ComponentOption } from '../../../utils/designer'
 
 const { state, designer } = useDesigner()
 
@@ -19,16 +19,16 @@ const categories = ref(
     'headers',
     'testimonials',
   ])
-const activeLibrary = ref('forms')
+const activeLibrary = ref<string>()
 const componentsMenu = computed(() => {
   return state.fetchedComponents.components?.filter((component) => {
     return component.category === activeLibrary.value
   })
 })
-const cloneComponent = (comp: Component) => {
+const cloneComponent = (comp: ComponentOption) => {
   designer.cloneCompObjForDOMInsertion(comp)
 }
-const addComponent = (comp: Component) => {
+const addComponent = (comp: ComponentOption) => {
   const cloned = designer.cloneCompObjForDOMInsertion(comp)
   state.components.push(cloned)
   designer.saveCurrentDesignWithTimer()
@@ -131,8 +131,8 @@ watch(
           </template>
         </Draggable>
         <div
-          v-for="element in componentsMenu"
-          :key="element.id"
+          v-for="(element, index) in componentsMenu"
+          :key="`${element.name}-${element.category}-${index}`"
           @click="addComponent(element)"
         >
           <img
@@ -157,4 +157,4 @@ watch(
       <Square3Stack3DIcon class="shrink-0 w-6 h-6 m-2 cursor-pointer" />
     </div>
   </div>
-</template>import { ref, computed, type Component } from 'vue';
+</template>

@@ -8,6 +8,11 @@ import tailwindPaddingAndMargin from './tailwind-padding-margin'
 import tailwindBorderRadius from './tailwind-border-radius'
 import tailwindBorderStyleWidthPlusColor from './tailwind-border-style-width-color'
 
+export interface VisualEditorProps {
+  modelValue?: string
+  components?: ComponentOption[]
+}
+
 export interface Component {
   id: string
   name: string
@@ -15,6 +20,8 @@ export interface Component {
   imageSrc: string
   html: string
 }
+
+export type ComponentOption = Omit<Component, 'id'>
 
 export interface Image {
   file: string | null
@@ -68,7 +75,7 @@ export interface DesignerState {
   components: Component[]
   basePrimaryImage: string | null
   highlightedImage: Image | null
-  fetchedComponents: { isLoading: boolean, isError: boolean, components: Component[] }
+  fetchedComponents: { components: ComponentOption[] }
   preview: string
   showPreview: boolean
 }
@@ -617,13 +624,14 @@ export class Designer {
     this.addClickAndHoverEvents()
   }
 
-  cloneCompObjForDOMInsertion(componentObject: Component) {
+  cloneCompObjForDOMInsertion(componentObject: ComponentOption) {
     // Hide slider and right menu
     this.store.menuPreview = false
     this.store.menuRight = false
 
+    const uuid = uuidv4()
     // Deep clone clone component
-    const clonedComponent = { ...componentObject }
+    const clonedComponent = { ...componentObject, id: uuid }
 
     // Create a DOMParser instance
     const parser = new DOMParser()
@@ -634,12 +642,9 @@ export class Designer {
     // Add the component id to the section element
     const section = doc.querySelector('section')
     if (section) {
-      // Generate a unique ID using uuidv4() and assign it to the section
-      section.dataset.componentid = uuidv4()
+      // assign uuid to section
+      section.dataset.componentid = uuid
     }
-
-    // Update the clonedComponent id with the newly generated unique ID
-    clonedComponent.id = section!.dataset.componentid!
 
     // Update the HTML content of the clonedComponent with the modified HTML
     clonedComponent.html = doc.querySelector('section')!.outerHTML
