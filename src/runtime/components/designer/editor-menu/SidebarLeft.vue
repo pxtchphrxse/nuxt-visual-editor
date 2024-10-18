@@ -10,15 +10,6 @@ import type { ComponentOption } from '../../../utils/designer'
 
 const { state, designer } = useDesigner()
 
-const categories = ref(
-  [
-    'forms',
-    'teams',
-    'posts',
-    'features',
-    'headers',
-    'testimonials',
-  ])
 const activeLibrary = ref<string>()
 const componentsMenu = computed(() => {
   return state.fetchedComponents.components?.filter((component) => {
@@ -81,7 +72,7 @@ watch(
           @mouseover.self="state.menuPreview = false"
         >
           <li
-            v-for="category in categories"
+            v-for="category in state.fetchedComponents.categories"
             :key="category"
             :class="{
               'bg-gray-100 text-gray-900':

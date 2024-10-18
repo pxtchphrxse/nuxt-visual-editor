@@ -11,6 +11,7 @@ import tailwindBorderStyleWidthPlusColor from './tailwind-border-style-width-col
 export interface VisualEditorProps {
   modelValue?: string
   components?: ComponentOption[]
+  categories?: string[]
 }
 
 export interface Component {
@@ -75,7 +76,7 @@ export interface DesignerState {
   components: Component[]
   basePrimaryImage: string | null
   highlightedImage: Image | null
-  fetchedComponents: { components: ComponentOption[] }
+  fetchedComponents: { components: ComponentOption[], categories: string[] }
   preview: string
   showPreview: boolean
 }

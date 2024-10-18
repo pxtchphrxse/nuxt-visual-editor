@@ -13,7 +13,7 @@ import { provideHeadlessUseId } from '#imports'
 provideHeadlessUseId(() => useId())
 
 const props = defineProps<VisualEditorProps>()
-const { state, designer } = useInitDesigner(props.components)
+const { state, designer } = useInitDesigner(props.components, props.categories)
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 
 // parse once on mounted only in case of when modelValue updated a DOM reference also updated which will discontinuity in editor-menu

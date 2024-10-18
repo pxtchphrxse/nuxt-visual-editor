@@ -1,8 +1,9 @@
 import { inject, provide, reactive, unref, type MaybeRef, type Reactive } from 'vue'
 import { Designer, type ComponentOption, type DesignerState } from '../utils/designer'
 import defaultComponents from '../utils/default-components'
+import defaultCategories from '../utils/default-categories'
 
-export const useInitDesigner = (components: MaybeRef<ComponentOption[]> = defaultComponents) => {
+export const useInitDesigner = (components: MaybeRef<ComponentOption[]> = defaultComponents, categories: MaybeRef<string[]> = defaultCategories) => {
   const state = reactive<DesignerState>({
     menuPreview: false,
     menuLeft: true,
@@ -61,7 +62,7 @@ export const useInitDesigner = (components: MaybeRef<ComponentOption[]> = defaul
     components: [],
     basePrimaryImage: null,
     highlightedImage: null,
-    fetchedComponents: { components: unref(components) },
+    fetchedComponents: { components: unref(components), categories: unref(categories) },
     preview: '',
     showPreview: false,
   })
