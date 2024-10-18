@@ -29,6 +29,7 @@ export interface Image {
 }
 
 export interface DesignerState {
+  designerId: string
   menuPreview: boolean
   menuLeft: boolean
   menuRight: boolean
@@ -538,8 +539,8 @@ export class Designer {
       e.preventDefault()
       e.stopPropagation()
 
-      if (document.querySelector('[selected]') !== null) {
-        document.querySelector('[selected]')?.removeAttribute('selected')
+      if (document.querySelector(`#${this.store.designerId} [selected]`) !== null) {
+        document.querySelector(`#${this.store.designerId} [selected]`)?.removeAttribute('selected')
       }
 
       (e.currentTarget as HTMLElement)?.removeAttribute('hovered')
@@ -558,7 +559,7 @@ export class Designer {
    *
    */
   addClickAndHoverEvents = () => {
-    document.querySelectorAll('.visual-editor section *').forEach((element) => {
+    document.querySelectorAll(`#${this.store.designerId} section *`).forEach((element) => {
       if (
         this.elementsWithListeners
         && this.elementsWithListeners.has(element) === false
@@ -574,8 +575,8 @@ export class Designer {
       document.querySelector('[hovered]')!.removeAttribute('hovered')
     }
 
-    if (document.querySelector('[selected]') !== null) {
-      document.querySelector('[selected]')!.removeAttribute('selected')
+    if (document.querySelector(`#${this.store.designerId} [selected]`) !== null) {
+      document.querySelector(`#${this.store.designerId} [selected]`)!.removeAttribute('selected')
     }
   }
 
@@ -621,7 +622,7 @@ export class Designer {
     })
 
     // This will be executed after the DOM has been updated
-    this.store.element = document.querySelector('[selected]')
+    this.store.element = document.querySelector(`#${this.store.designerId} [selected]`)
     this.addClickAndHoverEvents()
   }
 
@@ -660,7 +661,7 @@ export class Designer {
 
   getCurrentIndex(event: Event) {
     // Declare container of components and current event
-    const allComponents = document.querySelector('#pagebuilder')!.children
+    const allComponents = document.querySelector(`#${this.store.designerId}`)!.children
     const currentComponent = (event.target as HTMLElement).closest('div[data-draggable="true"]')
     // Get index of chosen event
     const currentIndex = Array.from(allComponents).indexOf(currentComponent!)
@@ -694,7 +695,7 @@ export class Designer {
     )
     // Follow component to new location
     document
-      .querySelector('#pagebuilder')!
+      .querySelector(`#${this.store.designerId}`)!
       .children[currentIndex + 1 * dir].scrollIntoView({ behavior: 'smooth' })
     // end of method "moveComponent"
   }
@@ -764,7 +765,7 @@ export class Designer {
     const addedHtmlComponents: string[] = []
     // iterate over each top-level section component
     document
-      .querySelectorAll('.visual-editor section')
+      .querySelectorAll(`#${this.store.designerId} section`)
       .forEach((section) => {
         // remove hovered and selected
 
@@ -774,9 +775,9 @@ export class Designer {
         }
 
         // remove selected
-        const selected = section.querySelector('[selected]')
+        const selected = section.querySelector(`#${this.store.designerId} [selected]`)
         if (selected !== null) {
-          section.querySelector('[selected]')!.removeAttribute('selected')
+          section.querySelector(`#${this.store.designerId} [selected]`)!.removeAttribute('selected')
         }
 
         // push outer html into the array

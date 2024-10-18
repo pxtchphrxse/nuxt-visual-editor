@@ -12,8 +12,9 @@ import { provideHeadlessUseId } from '#imports'
 // Use SSR-safe IDs for Headless UI
 provideHeadlessUseId(() => useId())
 
+const designerId = useId()
 const props = defineProps<VisualEditorProps>()
-const { state, designer } = useInitDesigner(props.components, props.categories)
+const { state, designer } = useInitDesigner(designerId!, props.components, props.categories)
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 
 // parse once on mounted only in case of when modelValue updated a DOM reference also updated which will discontinuity in editor-menu
@@ -50,14 +51,14 @@ watch(() => state.preview, (value) => {
 </template>
 
 <style>
-#pagebuilder a {
+.pagebuilder a {
   cursor: default;
 }
-#pagebuilder [selected] {
+.pagebuilder [selected] {
   outline: rgb(185, 16, 16) dashed 4px !important;
   outline-offset: -2px !important;
 }
-#pagebuilder [hovered] {
+.pagebuilder [hovered] {
   outline: rgb(0, 140, 14, 1) dashed 4px !important;
   outline-offset: -2px !important;
 }

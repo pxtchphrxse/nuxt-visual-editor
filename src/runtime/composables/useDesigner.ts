@@ -3,8 +3,9 @@ import { Designer, type ComponentOption, type DesignerState } from '../utils/des
 import defaultComponents from '../utils/default-components'
 import defaultCategories from '../utils/default-categories'
 
-export const useInitDesigner = (components: MaybeRef<ComponentOption[]> = defaultComponents, categories: MaybeRef<string[]> = defaultCategories) => {
+export const useInitDesigner = (designerId: string, components: MaybeRef<ComponentOption[]> = defaultComponents, categories: MaybeRef<string[]> = defaultCategories) => {
   const state = reactive<DesignerState>({
+    designerId,
     menuPreview: false,
     menuLeft: true,
     menuRight: true,
