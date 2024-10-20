@@ -14,7 +14,6 @@
       <ClientOnly>
         <VisualEditor
           v-model="html2"
-          :components="components"
         />
       </ClientOnly>
       <client-only><pre class="overflow-x-auto">{{ html }}</pre></client-only>
