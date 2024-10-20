@@ -16,7 +16,7 @@
           v-model="html2"
         />
       </ClientOnly>
-      <client-only><pre class="overflow-x-auto">{{ html }}</pre></client-only>
+      <client-only><pre class="overflow-x-auto">{{ html2 }}</pre></client-only>
     </div>
   </div>
 </template>
