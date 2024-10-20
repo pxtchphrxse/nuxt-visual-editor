@@ -2,17 +2,20 @@
   <div class="bg-emerald-300">
     <div class="h-24" />
     <div class="w-4/5 h-96 mx-auto">
-      <VisualEditor
-        v-model="html"
-        :components="components"
-      />
+      <ClientOnly>
+        <VisualEditor
+          v-model="html"
+          :components="components"
+        />
+      </ClientOnly>
       <client-only><pre class="overflow-x-auto">{{ html }}</pre></client-only>
     </div>
     <div class="w-3/5 mx-auto h-[650px] mt-24">
-      <VisualEditor
-        v-model="html2"
-        :components="components"
-      />
+      <ClientOnly>
+        <VisualEditor
+          v-model="html2"
+        />
+      </ClientOnly>
       <client-only><pre class="overflow-x-auto">{{ html }}</pre></client-only>
     </div>
   </div>
