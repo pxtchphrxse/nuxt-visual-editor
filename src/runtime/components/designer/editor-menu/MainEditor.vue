@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Draggable from 'vuedraggable'
 import {
   EyeIcon,
   Squares2X2Icon,
@@ -64,7 +63,7 @@ const deselectCurrentComponent = function () {
         </div>
       </div>
     </div>
-    <Draggable
+    <!-- <Draggable
       :id="state.designerId"
       :list="state.components"
       animation="200"
@@ -80,10 +79,25 @@ const deselectCurrentComponent = function () {
           @mouseup="state.element=element"
         >
           <ComponentTopMenu />
-          <!-- eslint-disable-next-line -->
           <section class="m-0.5" v-html="element.html" />
         </div>
       </template>
-    </Draggable>
+    </Draggable> -->
+    <div
+      :id="state.designerId"
+      class="pagebuilder bg-white grow overflow-y-auto"
+    >
+      <div
+        v-for="element in state.components"
+        :key="element.id"
+        class="relative group"
+        data-sortable="true"
+        @mouseup="state.element = element as any"
+      >
+        <ComponentTopMenu />
+        <!-- eslint-disable-next-line -->
+      <section class="m-0.5" v-html="element.html" />
+      </div>
+    </div>
   </main>
 </template>

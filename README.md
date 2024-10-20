@@ -55,11 +55,13 @@ export default defineNuxtConfig({
 });
 ```
 
-That's it! You can now use Nuxt Visual Editor in your Nuxt app ✨
+To avoid seeing warnings from Vue about a mismatch in content, you'll need to wrap the `VisualEditor` component with the `ClientOnly` component `Nuxt` provides as shown here:
 
 ```vue
 <template>
-  <VisualEditor />
+  <ClientOnly>
+    <VisualEditor />
+  </ClientOnly>
 </template>
 ```
 
@@ -92,11 +94,13 @@ That's it! You can now use Nuxt Visual Editor in your Nuxt app ✨
 
 ```vue
 <template>
-  <VisualEditor
-    v-model="html"
-    :components="components"
-    :categories="categories"
-  />
+  <ClientOnly>
+    <VisualEditor
+      v-model="html"
+      :components="components"
+      :categories="categories"
+    />
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
@@ -123,6 +127,7 @@ const components = ref([
 - custom slots
 - custom image providers
 - true two-way binding (currently partial)
+- control props for other states (eg. sidebarOpen, preview)
 
 ## Contribution
 

@@ -36,8 +36,7 @@
     "defu": "^6.1.4",
     "nuxt-headlessui": "^1.2.0",
     "pathe": "^1.1.2",
-    "uuid": "^10.0.0",
-    "vuedraggable": "^4.1.0"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.5.0",
