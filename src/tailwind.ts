@@ -46,7 +46,7 @@ export default async function installTailwind(moduleOptions: ModuleOptions, nuxt
             },
           },
         },
-        plugins: [require('@tailwindcss/forms')],
+        plugins: [require('@tailwindcss/forms', { strategy: 'class' })],
       };
     `,
   })
