@@ -20,7 +20,6 @@ const addComponent = (comp: ComponentOption) => {
   state.components.push(cloned)
   designer.saveCurrentDesignWithTimer()
   designer.addClickAndHoverEvents()
-  console.log(wrapper.value)
 }
 watch(
   () => state.components.map(c => c.id),
@@ -33,11 +32,9 @@ watch(
 const wrapper = ref<HTMLElement>()
 
 const scrollY = ref(0)
-onMounted(() => {
-  window.addEventListener('mousemove', (event) => {
-    scrollY.value = event.clientY - 20
-  })
-})
+const onMouseEnterCategory = (event: MouseEvent) => {
+  scrollY.value = event.clientY - 20
+}
 const top = computed(() => {
   return scrollY.value - 40 + 'px'
 })
@@ -94,6 +91,7 @@ const left = computed(() => {
                 activeLibrary === category && state.menuPreview === true,
             }"
             class="w-full myPrimaryParagrap font-medium py-4 pl-2 pr-0 capitalize cursor-pointer rounded-l-lg"
+            @mouseenter="onMouseEnterCategory"
             @mouseover="
               activeLibrary = category;
               state.menuPreview = true
