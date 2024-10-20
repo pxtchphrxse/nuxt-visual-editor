@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5
+
+- change mouse event to show components menu
+
 ## 0.1.4
 
 - fix vuedraggable problem by disabling it
