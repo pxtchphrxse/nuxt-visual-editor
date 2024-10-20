@@ -1,7 +1,7 @@
 export default [
   'forms',
   'teams',
-  'posts',
+  // 'posts',
   'features',
   'headers',
   'testimonials',

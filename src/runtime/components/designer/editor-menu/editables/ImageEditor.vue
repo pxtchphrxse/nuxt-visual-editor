@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { CloudArrowUpIcon, PhotoIcon } from '@heroicons/vue/24/outline'
-import { ref, useId } from 'vue'
-import { useDesigner } from '../../../../composables/useDesigner'
+import { ref } from 'vue'
+import { useDesigner, useRandomId } from '../../../../composables/useDesigner'
 
 const { state, designer } = useDesigner()
 
-const id = useId()
+const id = useRandomId()
 
 const onSelectFile = (event: Event) => {
   const input = event.target as HTMLInputElement

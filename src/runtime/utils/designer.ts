@@ -662,7 +662,7 @@ export class Designer {
   getCurrentIndex(event: Event) {
     // Declare container of components and current event
     const allComponents = document.querySelector(`#${this.store.designerId}`)!.children
-    const currentComponent = (event.target as HTMLElement).closest('div[data-draggable="true"]')
+    const currentComponent = (event.target as HTMLElement).closest('div[data-sortable="true"]')
     // Get index of chosen event
     const currentIndex = Array.from(allComponents).indexOf(currentComponent!)
     return currentIndex

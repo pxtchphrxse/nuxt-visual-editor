@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import Draggable from 'vuedraggable'
 import {
   Square3Stack3DIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useDesigner } from '../../../composables/useDesigner'
 import type { ComponentOption } from '../../../utils/designer'
 
@@ -16,14 +15,12 @@ const componentsMenu = computed(() => {
     return component.category === activeLibrary.value
   })
 })
-const cloneComponent = (comp: ComponentOption) => {
-  designer.cloneCompObjForDOMInsertion(comp)
-}
 const addComponent = (comp: ComponentOption) => {
   const cloned = designer.cloneCompObjForDOMInsertion(comp)
   state.components.push(cloned)
   designer.saveCurrentDesignWithTimer()
   designer.addClickAndHoverEvents()
+  console.log(wrapper.value)
 }
 watch(
   () => state.components.map(c => c.id),
@@ -34,8 +31,15 @@ watch(
   }, { deep: true },
 )
 const wrapper = ref<HTMLElement>()
+
+const scrollY = ref(0)
+onMounted(() => {
+  window.addEventListener('mousemove', (event) => {
+    scrollY.value = event.clientY - 20
+  })
+})
 const top = computed(() => {
-  return (wrapper.value?.getBoundingClientRect().top || 0) + 'px'
+  return scrollY.value - 40 + 'px'
 })
 const left = computed(() => {
   return (wrapper.value?.getBoundingClientRect().left || 0) + 224 + 'px'
@@ -113,7 +117,7 @@ const left = computed(() => {
           {{ activeLibrary }}
         </p>
         <!-- TODO: fix drag and drop to MainEditor -->
-        <Draggable
+        <!-- <Draggable
           v-if="false"
           :clone="cloneComponent"
           :group="{ name: 'components', pull: 'clone', put: false }"
@@ -131,10 +135,11 @@ const left = computed(() => {
               >
             </div>
           </template>
-        </Draggable>
+        </Draggable> -->
         <div
           v-for="(element, index) in componentsMenu"
           :key="`${element.name}-${element.category}-${index}`"
+          class="flex flex-col gap-4 pr-4 overflow-y-auto"
           @click="addComponent(element)"
         >
           <img

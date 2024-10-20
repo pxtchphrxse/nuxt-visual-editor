@@ -81,3 +81,7 @@ export const useDesigner = () => {
 
   return { state, designer }
 }
+
+export const useRandomId = () => {
+  return `designer${Date.now()}${Math.round(Math.random() * 10000).toString(16)}`
+}
