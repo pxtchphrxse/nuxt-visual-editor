@@ -3,7 +3,7 @@ import {
   Square3Stack3DIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useDesigner } from '../../../composables/useDesigner'
 import type { ComponentOption } from '../../../utils/designer'
 
@@ -20,6 +20,7 @@ const addComponent = (comp: ComponentOption) => {
   state.components.push(cloned)
   designer.saveCurrentDesignWithTimer()
   designer.addClickAndHoverEvents()
+  console.log(wrapper.value)
 }
 watch(
   () => state.components.map(c => c.id),
@@ -30,8 +31,15 @@ watch(
   }, { deep: true },
 )
 const wrapper = ref<HTMLElement>()
+
+const scrollY = ref(0)
+onMounted(() => {
+  window.addEventListener('mousemove', (event) => {
+    scrollY.value = event.clientY - 20
+  })
+})
 const top = computed(() => {
-  return (wrapper.value?.getBoundingClientRect().top || 0) + 'px'
+  return scrollY.value - 40 + 'px'
 })
 const left = computed(() => {
   return (wrapper.value?.getBoundingClientRect().left || 0) + 224 + 'px'

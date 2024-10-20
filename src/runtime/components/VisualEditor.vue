@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, useId, watch } from 'vue'
-import { useInitDesigner } from '../composables/useDesigner'
+import { onMounted, watch } from 'vue'
+import { useInitDesigner, useRandomId } from '../composables/useDesigner'
 import type { VisualEditorProps } from '../utils/designer'
 import SidebarLeft from './designer/editor-menu/SidebarLeft.vue'
 import MainEditor from './designer/editor-menu/MainEditor.vue'
@@ -10,9 +10,9 @@ import Preview from './designer/Preview.vue'
 import { provideHeadlessUseId } from '#imports'
 
 // Use SSR-safe IDs for Headless UI
-provideHeadlessUseId(() => useId())
+provideHeadlessUseId(() => useRandomId())
 
-const designerId = useId()
+const designerId = useRandomId()
 const props = defineProps<VisualEditorProps>()
 const { state, designer } = useInitDesigner(designerId!, props.components, props.categories)
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
