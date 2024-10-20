@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Draggable from 'vuedraggable'
 import {
   Square3Stack3DIcon,
   XMarkIcon,
@@ -16,9 +15,6 @@ const componentsMenu = computed(() => {
     return component.category === activeLibrary.value
   })
 })
-const cloneComponent = (comp: ComponentOption) => {
-  designer.cloneCompObjForDOMInsertion(comp)
-}
 const addComponent = (comp: ComponentOption) => {
   const cloned = designer.cloneCompObjForDOMInsertion(comp)
   state.components.push(cloned)
@@ -113,7 +109,7 @@ const left = computed(() => {
           {{ activeLibrary }}
         </p>
         <!-- TODO: fix drag and drop to MainEditor -->
-        <Draggable
+        <!-- <Draggable
           v-if="false"
           :clone="cloneComponent"
           :group="{ name: 'components', pull: 'clone', put: false }"
@@ -131,10 +127,11 @@ const left = computed(() => {
               >
             </div>
           </template>
-        </Draggable>
+        </Draggable> -->
         <div
           v-for="(element, index) in componentsMenu"
           :key="`${element.name}-${element.category}-${index}`"
+          class="flex flex-col gap-4 pr-4 overflow-y-auto"
           @click="addComponent(element)"
         >
           <img
