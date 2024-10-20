@@ -3,7 +3,7 @@ import {
   Square3Stack3DIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useDesigner } from '../../../composables/useDesigner'
 import type { ComponentOption } from '../../../utils/designer'
 
