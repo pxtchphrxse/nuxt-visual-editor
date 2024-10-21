@@ -1,4 +1,4 @@
-import { defineNuxtModule, addPlugin, createResolver, addComponent, installModule } from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, createResolver, addComponent } from '@nuxt/kit'
 import installTailwind from './tailwind'
 
 export interface ImageProviders {
@@ -46,10 +46,9 @@ export default defineNuxtModule<ModuleOptions>({
 
     const runtimeDir = resolve('./runtime')
     nuxt.options.build.transpile.push(runtimeDir)
-    nuxt.options.build.transpile.push('@heroicons/vue')
+    nuxt.options.build.transpile.push('@heroicons/vue', '@headlessui/vue')
 
     await installTailwind(options, nuxt, resolve)
-    await installModule('nuxt-headlessui')
 
     // add preview images for default components
     nuxt.hook('nitro:config', async (nitroConfig) => {

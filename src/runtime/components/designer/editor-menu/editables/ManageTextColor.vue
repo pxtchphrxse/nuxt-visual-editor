@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, watch, ref } from 'vue'
 import { CheckIcon, SwatchIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { provideUseId, Switch } from '@headlessui/vue'
 import tailwindColors from '../../../../utils/tailwaind-colors'
 import { useDesigner } from '../../../../composables/useDesigner'
+import { useId } from '#imports'
+
+provideUseId(() => useId()!)
 
 const { state, designer } = useDesigner()
 
@@ -228,7 +232,7 @@ const getTextColorCustomHex = computed(() => {
           </div>
 
           <!-- Toggle start -->
-          <HeadlessSwitch
+          <Switch
             v-model="enabledCustomColor"
             :class="[
               enabledCustomColor ? 'bg-myPrimaryLinkColor' : 'bg-gray-200',
@@ -285,7 +289,7 @@ const getTextColorCustomHex = computed(() => {
                 </svg>
               </span>
             </span>
-          </HeadlessSwitch>
+          </Switch>
           <!-- Toggle end -->
         </div>
       </div>

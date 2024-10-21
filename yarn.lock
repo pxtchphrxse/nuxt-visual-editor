@@ -848,7 +848,7 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
-"@headlessui/vue@^1.7.18":
+"@headlessui/vue@^1.7.23":
   version "1.7.23"
   resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.23.tgz#7fe19dbeca35de9e6270c82c78c4864e6a6f7391"
   integrity sha512-JzdCNqurrtuu0YW6QaDtR2PIYCKPUWq28csDyMvN4zmGccmE7lz40Is6hc3LA4HFeCI7sekZ/PQMTNmn9I/4Wg==
@@ -1109,7 +1109,7 @@
     "@typescript-eslint/types" "^8.5.0"
     "@typescript-eslint/utils" "^8.5.0"
 
-"@nuxt/kit@3.13.2", "@nuxt/kit@^3.11.2", "@nuxt/kit@^3.12.3", "@nuxt/kit@^3.13.1", "@nuxt/kit@^3.13.2":
+"@nuxt/kit@3.13.2", "@nuxt/kit@^3.12.3", "@nuxt/kit@^3.13.1", "@nuxt/kit@^3.13.2":
   version "3.13.2"
   resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-3.13.2.tgz#4c019a87e08c33ec14d1059497ba40568b82bfed"
   integrity sha512-KvRw21zU//wdz25IeE1E5m/aFSzhJloBRAQtv+evcFeZvuroIxpIQuUqhbzuwznaUwpiWbmwlcsp5uOWmi4vwA==
@@ -5100,15 +5100,6 @@ nuxi@^3.13.2:
   integrity sha512-yAgpxBcIB2/DWL7dWRZOQa5ULLZQ4AWgYdqtUDbeOZ3KxmY/+fqm8/UJuU7QK81JrccNaZeSI+GLe5BY7RR3cQ==
   optionalDependencies:
     fsevents "~2.3.3"
-
-nuxt-headlessui@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/nuxt-headlessui/-/nuxt-headlessui-1.2.0.tgz#87e873ba0c54ab1d6968abb3d6b749be9d44d641"
-  integrity sha512-eidWwA4SFLWFk2KcGMHlrPTJb+ODEt5Bsj6cXjmhDtRYydqvgYXHU1U7563E6/qMuayThumbGUopF1IRqlYHwA==
-  dependencies:
-    "@headlessui/vue" "^1.7.18"
-    "@nuxt/kit" "^3.11.2"
-    pathe "^1.1.2"
 
 nuxt@^3.13.0:
   version "3.13.2"

@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import { computed } from 'vue'
+import { provideUseId, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 import EditorAccordion from '../EditorAccordion.vue'
 import tailwindBorderStyleWidthPlusColor from '../../../../utils/tailwind-border-style-width-color'
 import { useDesigner } from '../../../../composables/useDesigner'
+
+import { useId } from '#imports'
+
+provideUseId(() => useId()!)
 
 const { state, designer } = useDesigner()
 const _borderStyle = computed({
@@ -68,12 +73,12 @@ const _borderWidth = computed({
       </div>
 
       <label class="myPrimaryInputLabel"> Border Color </label>
-      <HeadlessListbox
+      <Listbox
         :value="state.borderColor"
         as="div"
       >
         <div class="relative mt-2">
-          <HeadlessListboxButton class="myPrimarySelect">
+          <ListboxButton class="myPrimarySelect">
             <span class="flex items-center">
               <div
                 v-if="state.borderColor !== 'none'"
@@ -93,17 +98,17 @@ const _borderWidth = computed({
                 aria-hidden="true"
               />
             </span>
-          </HeadlessListboxButton>
+          </ListboxButton>
 
           <transition
             leave-active-class="transition ease-in duration-100"
             leave-from-class="opacity-100"
             leave-to-class="opacity-0"
           >
-            <HeadlessListboxOptions
+            <ListboxOptions
               class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
             >
-              <HeadlessListboxOption
+              <ListboxOption
                 v-for="color in tailwindBorderStyleWidthPlusColor.borderColor"
                 :key="color"
                 v-slot="{ active }"
@@ -127,11 +132,11 @@ const _borderWidth = computed({
                     <span class="ml-3">{{ color }}</span>
                   </div>
                 </li>
-              </HeadlessListboxOption>
-            </HeadlessListboxOptions>
+              </ListboxOption>
+            </ListboxOptions>
           </transition>
         </div>
-      </HeadlessListbox>
+      </Listbox>
     </template>
   </EditorAccordion>
 </template>
