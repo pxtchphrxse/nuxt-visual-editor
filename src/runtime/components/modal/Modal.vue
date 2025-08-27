@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { provideUseId, TransitionRoot, Dialog, TransitionChild, DialogOverlay } from '@headlessui/vue'
+import { useId } from '#imports'
+
+provideUseId(() => useId()!)
 
 const props = defineProps({
   show: {
@@ -40,11 +44,11 @@ const maxWidthClass = computed(() => {
 
 <template>
   <teleport to="body">
-    <HeadlessTransitionRoot
+    <TransitionRoot
       :show="show"
       as="template"
     >
-      <HeadlessDialog
+      <Dialog
         as="div"
         class="fixed z-30 inset-0 overflow-y-auto sm:px-4 py-6 p-4"
         @close="close"
@@ -52,7 +56,7 @@ const maxWidthClass = computed(() => {
         <div
           class="flex items-end justify-center pb-20 text-center sm:block sm:p-0"
         >
-          <HeadlessTransitionChild
+          <TransitionChild
             as="template"
             enter="ease-out duration-300"
             enter-from="opacity-0"
@@ -61,16 +65,16 @@ const maxWidthClass = computed(() => {
             leave-from="opacity-100"
             leave-to="opacity-0"
           >
-            <HeadlessDialogOverlay
+            <DialogOverlay
               class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
             />
-          </HeadlessTransitionChild>
+          </TransitionChild>
           <!-- This element is to trick the browser into centering the modal contents. -->
           <span
             aria-hidden="true"
             class="hidden sm:inline-block sm:align-middle sm:h-screen"
           >&#8203;</span>
-          <HeadlessTransitionChild
+          <TransitionChild
             as="template"
             enter="ease-out duration-300"
             enter-from="opacity-0 scale-95"
@@ -89,9 +93,9 @@ const maxWidthClass = computed(() => {
             >
               <slot />
             </div>
-          </HeadlessTransitionChild>
+          </TransitionChild>
         </div>
-      </HeadlessDialog>
-    </HeadlessTransitionRoot>
+      </Dialog>
+    </TransitionRoot>
   </teleport>
 </template>

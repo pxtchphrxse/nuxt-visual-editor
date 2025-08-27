@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { provideUseId, TransitionRoot, Dialog, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/vue'
+import { useId } from '#imports'
+
+provideUseId(() => useId()!)
 
 defineProps<{ open: boolean, title: string | null }>()
 
@@ -8,11 +12,11 @@ defineEmits(['slideOverButton'])
 
 <template>
   <teleport to="body">
-    <HeadlessTransitionRoot
+    <TransitionRoot
       as="template"
       :show="open"
     >
-      <HeadlessDialog
+      <Dialog
         as="div"
         class="relative z-30"
         @click="$emit('slideOverButton')"
@@ -24,7 +28,7 @@ defineEmits(['slideOverButton'])
             <div
               class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 justify-end"
             >
-              <HeadlessTransitionChild
+              <TransitionChild
                 as="template"
                 enter="transform transition ease-in-out duration-200 sm:duration-200"
                 enter-from="translate-x-full"
@@ -33,15 +37,15 @@ defineEmits(['slideOverButton'])
                 leave-from="translate-x-0"
                 leave-to="translate-x-full"
               >
-                <HeadlessDialogPanel class="pointer-events-auto w-96 max-w-md">
+                <DialogPanel class="pointer-events-auto w-96 max-w-md">
                   <div
                     class="flex h-full flex-col overflow-y-scroll bg-white pt-8 pb-6 shadow-xl"
                   >
                     <div class="pl-4 pr-2">
                       <div class="flex items-center justify-between">
-                        <HeadlessDialogTitle class="myTertiaryHeader my-0">
+                        <DialogTitle class="myTertiaryHeader my-0">
                           {{ title }}
-                        </HeadlessDialogTitle>
+                        </DialogTitle>
                         <div class="ml-3 flex h-7 items-center">
                           <button
                             class="hover:bg-myPrimaryLinkColor hover:text-white bg-gray-100 rounded-full cursor-pointer"
@@ -58,12 +62,12 @@ defineEmits(['slideOverButton'])
                       </div>
                     </div>
                   </div>
-                </HeadlessDialogPanel>
-              </HeadlessTransitionChild>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </div>
         </div>
-      </HeadlessDialog>
-    </HeadlessTransitionRoot>
+      </Dialog>
+    </TransitionRoot>
   </teleport>
 </template>

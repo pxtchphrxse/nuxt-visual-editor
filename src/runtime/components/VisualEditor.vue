@@ -7,10 +7,6 @@ import MainEditor from './designer/editor-menu/MainEditor.vue'
 import SidebarRight from './designer/editor-menu/SidebarRight.vue'
 import DesignerPreviewModal from './modal/DesignerPreviewModal.vue'
 import Preview from './designer/Preview.vue'
-import { provideHeadlessUseId } from '#imports'
-
-// Use SSR-safe IDs for Headless UI
-provideHeadlessUseId(() => useRandomId())
 
 const designerId = useRandomId()
 const props = defineProps<VisualEditorProps>()
