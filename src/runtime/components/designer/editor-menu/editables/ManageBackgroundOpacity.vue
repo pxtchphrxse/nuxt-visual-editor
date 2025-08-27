@@ -4,8 +4,12 @@ import {
   XMarkIcon,
   ChevronUpDownIcon,
 } from '@heroicons/vue/24/outline'
+import { provideUseId, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 import tailwindOpacities from '../../../../utils/tailwind-opacities'
 import { useDesigner } from '../../../../composables/useDesigner'
+import { useId } from '#imports'
+
+provideUseId(() => useId()!)
 
 const { state, designer } = useDesigner()
 
@@ -19,12 +23,12 @@ const backgroundOpacity = computed({
   <div class="my-3 py-3">
     <label class="myPrimaryInputLabel"> Background opacity</label>
 
-    <HeadlessListbox
+    <Listbox
       v-model="backgroundOpacity"
       as="div"
     >
       <div class="relative">
-        <HeadlessListboxButton class="myPrimarySelect">
+        <ListboxButton class="myPrimarySelect">
           <span class="flex items-center">
             <div
               v-if="backgroundOpacity === 'none'"
@@ -54,17 +58,17 @@ const backgroundOpacity = computed({
               aria-hidden="true"
             />
           </span>
-        </HeadlessListboxButton>
+        </ListboxButton>
 
         <transition
           leave-active-class="transition ease-in duration-100"
           leave-from-class="opacity-100"
           leave-to-class="opacity-0"
         >
-          <HeadlessListboxOptions
+          <ListboxOptions
             class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
           >
-            <HeadlessListboxOption
+            <ListboxOption
               v-for="bo in tailwindOpacities.backgroundOpacities"
               :key="bo"
               v-slot="{ active }"
@@ -96,10 +100,10 @@ const backgroundOpacity = computed({
                   <span class="ml-3">{{ bo }}</span>
                 </div>
               </li>
-            </HeadlessListboxOption>
-          </HeadlessListboxOptions>
+            </ListboxOption>
+          </ListboxOptions>
         </transition>
       </div>
-    </HeadlessListbox>
+    </Listbox>
   </div>
 </template>

@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { provideUseId, TransitionRoot, Dialog, TransitionChild, DialogOverlay } from '@headlessui/vue'
+import { useId } from '#imports'
+
+provideUseId(() => useId()!)
+
 defineProps({
   show: {
     type: Boolean,
@@ -17,11 +22,11 @@ const firstButton = function () {
 
 <template>
   <teleport to="body">
-    <HeadlessTransitionRoot
+    <TransitionRoot
       :show="show"
       as="template"
     >
-      <HeadlessDialog
+      <Dialog
         as="div"
         class="fixed z-[100] inset-0 overflow-y-auto"
         tabindex="0"
@@ -30,7 +35,7 @@ const firstButton = function () {
         <div
           class="flex items-end justify-center pb-20 text-center sm:block sm:p-0 bg-white"
         >
-          <HeadlessTransitionChild
+          <TransitionChild
             as="template"
             enter="ease-out duration-300"
             enter-from="opacity-0"
@@ -39,17 +44,17 @@ const firstButton = function () {
             leave-from="opacity-300"
             leave-to="opacity-100"
           >
-            <HeadlessDialogOverlay
+            <DialogOverlay
               class="fixed inset-0 bg-opacity-75 transition-opacity"
             />
-          </HeadlessTransitionChild>
+          </TransitionChild>
 
           <!-- This element is to trick the browser into centering the modal contents. -->
           <span
             aria-hidden="true"
             class="hidden sm:inline-block sm:align-middle sm:h-screen"
           >&#8203;</span>
-          <HeadlessTransitionChild
+          <TransitionChild
             as="template"
             enter="ease-out duration-300"
             enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -93,9 +98,9 @@ const firstButton = function () {
               </div>
               <slot />
             </div>
-          </HeadlessTransitionChild>
+          </TransitionChild>
         </div>
-      </HeadlessDialog>
-    </HeadlessTransitionRoot>
+      </Dialog>
+    </TransitionRoot>
   </teleport>
 </template>
