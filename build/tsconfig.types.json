@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "../src",
+    "outDir": "../dist/.types"
+  },
+  "include": [
+    "../src/module.ts",
+    "../src/options.ts",
+    "../src/runtime",
+    "../src/app",
+    "../src/types"
+  ],
+  "exclude": []
+}

@@ -19,7 +19,8 @@
     "types": ["node"],
     "paths": {
       "#app": ["./node_modules/nuxt/dist/app/index"],
-      "#imports": ["./src/types/nuxt-imports.d.ts"]
+      "#imports": ["./src/types/nuxt-imports.d.ts"],
+      "#visual-editor/*": ["./src/runtime/*"]
     }
   },
   "include": ["src", "build", "scripts", "test", "*.config.ts"],

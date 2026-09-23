@@ -1,32 +1,18 @@
-<template>
-  <div class="bg-emerald-300">
-    <div class="h-24" />
-    <div class="w-4/5 h-96 mx-auto">
-      <ClientOnly>
-        <VisualEditor v-model="html" :components="components" />
-      </ClientOnly>
-      <client-only>
-        <pre class="overflow-x-auto">{{ html }}</pre>
-      </client-only>
-    </div>
-    <div class="w-3/5 mx-auto h-[650px] mt-24">
-      <ClientOnly>
-        <VisualEditor v-model="html2" />
-      </ClientOnly>
-      <client-only>
-        <pre class="overflow-x-auto">{{ html2 }}</pre>
-      </client-only>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import defaultComponents from '#visual-editor/utils/default-components'
-
+<script setup lang="ts">
+// v1 content: migrated to the v2 vocabulary when loaded into the editor.
 const html = ref(
-  `<section data-componentid="36c45f07-813d-4ad0-9a48-c90eaf46bf47"><div class="py-20 mx-auto max-w-7xl px-6"><div class="mx-auto max-w-7xl px-6 lg:px-8"><div class="mx-auto max-w-2xl lg:mx-0"><section><p class="text-base font-medium text-red-600">Get the help you need</p></section><h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Support center</h2><p class="mt-6 text-lg leading-8 text-gray-600">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.</p></div></div></div></section>`,
+  '<section data-componentid="36c45f07-813d-4ad0-9a48-c90eaf46bf47"><div class="py-20 mx-auto max-w-7xl px-6">' +
+    '<p class="text-base font-medium text-red-600">Get the help you need</p>' +
+    '<h2 class="text-4xl font-bold sm:text-6xl">Support center</h2></div></section>',
 )
-const components = ref(defaultComponents.filter((c) => c.category !== 'teams'))
-
-const html2 = ref('')
 </script>
+
+<template>
+  <main style="max-width: 1200px; margin: 2rem auto; height: 80vh">
+    <ClientOnly>
+      <VisualEditor v-model="html" />
+    </ClientOnly>
+    <h3>Rendered with &lt;VisualEditorContent&gt;</h3>
+    <VisualEditorContent :html="html" />
+  </main>
+</template>

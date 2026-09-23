@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
+  extends: ['../shared'],
   modules: ['nuxt-visual-editor'],
-  visualEditor: {},
-  devtools: { enabled: true },
+  visualEditor: { containerClass: 'site-cms' },
   compatibilityDate: '2026-09-01',
 })

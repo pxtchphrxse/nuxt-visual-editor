@@ -1,3 +1,10 @@
+packages:
+  - playground
+  - test/fixtures/*
+  - '!test/fixtures/shared'
+  # Nuxt 3 itself depends on deprecated unplugin-vue-router; the Nuxt 3 fixture is installed on its
+  # own (see test/fixtures/nuxt3/README.md) so this lockfile only contains what the project controls.
+  - '!test/fixtures/nuxt3'
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true

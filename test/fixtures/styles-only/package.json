@@ -1,0 +1,10 @@
+{
+  "name": "fixture-styles-only",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nuxt": "4.5.2",
+    "nuxt-visual-editor": "workspace:*",
+    "vue": "^3.5.43"
+  }
+}

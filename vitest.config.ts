@@ -38,6 +38,7 @@ export default defineConfig({
         'src/runtime/sanitize.ts',
         'src/runtime/server/init-sanitizer.ts',
         'build/content-css.ts',
+        'src/options.ts',
       ],
       reporter: ['text', 'html', 'json-summary'],
       reportsDirectory: 'coverage',
