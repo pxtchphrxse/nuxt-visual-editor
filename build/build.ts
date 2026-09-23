@@ -49,6 +49,7 @@ await step('module', () =>
       ssr: 'src/module.ts',
       target: 'node22',
       minify: false,
+      sourcemap: true,
       rollupOptions: { output: { entryFileNames: 'module.mjs', format: 'es' } },
     },
   }),
@@ -64,6 +65,7 @@ await step('runtime', () =>
       emptyOutDir: false,
       target: 'es2022',
       minify: false,
+      sourcemap: true,
       lib: {
         formats: ['es'],
         entry: {
@@ -101,6 +103,7 @@ await step('app components', () =>
       emptyOutDir: false,
       target: 'es2022',
       minify: false,
+      sourcemap: true,
       cssCodeSplit: false,
       lib: {
         formats: ['es'],

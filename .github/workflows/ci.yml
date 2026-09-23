@@ -45,6 +45,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright-core install --with-deps chromium
       - run: pnpm build
+      # The Nuxt 3 fixture is its own workspace and consumes the freshly built package via file:.
+      - if: matrix.nuxt == '3'
+        run: pnpm test:fixtures:nuxt3
       - run: pnpm test:unit
       - run: pnpm test:e2e
       - uses: actions/upload-artifact@v7

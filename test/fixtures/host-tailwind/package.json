@@ -1,0 +1,12 @@
+{
+  "name": "fixture-host-tailwind",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "nuxt": "4.5.2",
+    "nuxt-visual-editor": "workspace:*",
+    "tailwindcss": "4.3.3",
+    "vue": "^3.5.43"
+  }
+}

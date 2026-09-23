@@ -5,6 +5,7 @@ import { useEditor } from '../../context'
 import VeIcon from '../ui/VeIcon.vue'
 import VePanel from '../ui/VePanel.vue'
 
+const props = defineProps<{ el: HTMLImageElement }>()
 const editor = useEditor()
 const src = ref('')
 const alt = ref('')
@@ -14,24 +15,19 @@ const dragging = ref(false)
 const input = ref<HTMLInputElement>()
 const id = useId()
 
-const image = () => editor.selected.value as HTMLImageElement | null
-
 watch(
-  [editor.selected, editor.revision],
+  editor.revision,
   () => {
-    const el = image()
-    src.value = el?.getAttribute('src') ?? ''
-    alt.value = el?.getAttribute('alt') ?? ''
+    src.value = props.el.getAttribute('src') ?? ''
+    alt.value = props.el.getAttribute('alt') ?? ''
   },
   { immediate: true },
 )
 
 function setSource(value: string) {
-  const el = image()
-  if (!el) return
   let ok = false
   editor.mutate(() => {
-    ok = setImageSrc(el, value)
+    ok = setImageSrc(props.el, value)
   })
   error.value = ok
     ? ''
@@ -53,9 +49,9 @@ function onDrop(event: DragEvent) {
 }
 
 function onAlt() {
-  const el = image()
-  if (el)
-    editor.mutate(() => (alt.value ? el.setAttribute('alt', alt.value) : el.removeAttribute('alt')))
+  editor.mutate(() =>
+    alt.value ? props.el.setAttribute('alt', alt.value) : props.el.removeAttribute('alt'),
+  )
 }
 </script>
 

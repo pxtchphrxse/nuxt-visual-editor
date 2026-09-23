@@ -4,6 +4,8 @@ import ColorField from '../ui/ColorField.vue'
 import VarSelect from '../ui/VarSelect.vue'
 import VePanel from '../ui/VePanel.vue'
 
+defineProps<{ el: HTMLElement }>()
+
 const styles = toOptions(['solid', 'dashed', 'dotted', 'double', 'none'])
 const widths = toOptions(['1px', '2px', '4px', '8px'])
 const radii = [
@@ -21,13 +23,13 @@ const radii = [
 
 <template>
   <VePanel title="Border & radius" data-panel="border">
-    <VarSelect label="Border style" name="--bd-s" :options="styles" />
-    <VarSelect label="Border width" name="--bd-w" :options="widths" />
-    <ColorField label="Border colour" name="--bd-c" />
-    <VarSelect label="Radius (all corners)" name="--r" :options="radii" />
-    <VarSelect label="Radius top left" name="--r-tl" :options="radii" />
-    <VarSelect label="Radius top right" name="--r-tr" :options="radii" />
-    <VarSelect label="Radius bottom right" name="--r-br" :options="radii" />
-    <VarSelect label="Radius bottom left" name="--r-bl" :options="radii" />
+    <VarSelect :el="el" label="Border style" name="--bd-s" :options="styles" />
+    <VarSelect :el="el" label="Border width" name="--bd-w" :options="widths" />
+    <ColorField :el="el" label="Border colour" name="--bd-c" />
+    <VarSelect :el="el" label="Radius (all corners)" name="--r" :options="radii" />
+    <VarSelect :el="el" label="Radius top left" name="--r-tl" :options="radii" />
+    <VarSelect :el="el" label="Radius top right" name="--r-tr" :options="radii" />
+    <VarSelect :el="el" label="Radius bottom right" name="--r-br" :options="radii" />
+    <VarSelect :el="el" label="Radius bottom left" name="--r-bl" :options="radii" />
   </VePanel>
 </template>

@@ -2,7 +2,7 @@
 const html =
   '<section data-ve-id="s1" data-ve-v="2" class="pad bg" style="--pad-y: 2rem; --bg: #10b981;">' +
   '<h2 class="fs" style="--fs: 2rem;">Hello</h2>' +
-  '<img src="x" onerror="window.__pwned = true">' +
+  '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" onerror="window.__pwned = true" alt="">' +
   '<a href="javascript:window.__pwned = true">bad link</a></section>'
 </script>
 

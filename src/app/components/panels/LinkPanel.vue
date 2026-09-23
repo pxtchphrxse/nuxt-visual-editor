@@ -5,42 +5,28 @@ import { useEditor } from '../../context'
 import VePanel from '../ui/VePanel.vue'
 import VeSwitch from '../ui/VeSwitch.vue'
 
+const props = defineProps<{ el: HTMLElement }>()
 const editor = useEditor()
-const enabled = ref(false)
-const href = ref('')
-const newTab = ref(false)
+const initial = getLink(props.el)
+const enabled = ref(!!initial)
+const href = ref(initial?.href ?? '')
+const newTab = ref(initial?.newTab ?? false)
 const error = ref('')
 const id = useId()
 
-watch(
-  editor.selected,
-  (el) => {
-    const link = el ? getLink(el) : null
-    enabled.value = !!link
-    href.value = link?.href ?? ''
-    newTab.value = link?.newTab ?? false
-    error.value = ''
-  },
-  { immediate: true },
-)
-
 function apply() {
-  const el = editor.selected.value
-  if (!el) return
   let ok = false
   editor.mutate(() => {
-    ok = setLink(el, { href: href.value, newTab: newTab.value })
+    ok = setLink(props.el, { href: href.value, newTab: newTab.value })
   })
   error.value = ok ? '' : 'Use an http(s), mailto: or tel: link, or a relative path.'
 }
 
 watch(enabled, (on) => {
-  const el = editor.selected.value
-  if (!on && el && getLink(el)) editor.mutate(() => removeLink(el))
+  if (!on && getLink(props.el)) editor.mutate(() => removeLink(props.el))
 })
 watch(newTab, () => {
-  if (enabled.value && href.value && editor.selected.value && getLink(editor.selected.value))
-    apply()
+  if (enabled.value && href.value && getLink(props.el)) apply()
 })
 </script>
 

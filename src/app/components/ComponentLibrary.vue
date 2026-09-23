@@ -34,24 +34,26 @@ const previewUrl = (preview?: string) =>
         {{ category }}
       </button>
     </div>
-    <ul class="ve-library__list" role="tabpanel" :aria-label="active">
-      <li v-for="component in visible" :key="component.name">
-        <button
-          type="button"
-          class="ve-library__item"
-          :aria-label="`Add ${component.name}`"
-          @click="editor.addComponent(component)"
-        >
-          <img
-            v-if="component.preview"
-            :src="previewUrl(component.preview)"
-            alt=""
-            loading="lazy"
-          />
-          <span>{{ component.name }}</span>
-        </button>
-      </li>
-    </ul>
+    <div class="ve-library__panel" role="tabpanel" :aria-label="active">
+      <ul class="ve-library__list">
+        <li v-for="component in visible" :key="component.name">
+          <button
+            type="button"
+            class="ve-library__item"
+            :aria-label="`Add ${component.name}`"
+            @click="editor.addComponent(component)"
+          >
+            <img
+              v-if="component.preview"
+              :src="previewUrl(component.preview)"
+              alt=""
+              loading="lazy"
+            />
+            <span>{{ component.name }}</span>
+          </button>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
 
@@ -91,12 +93,16 @@ const previewUrl = (preview?: string) =>
   }
 }
 
+.ve-library__panel {
+  min-height: 0;
+  overflow-y: auto;
+}
+
 .ve-library__list {
   display: grid;
   gap: 0.75rem;
   margin: 0;
   padding: 0.75rem 1rem 1rem;
-  overflow-y: auto;
   list-style: none;
 }
 

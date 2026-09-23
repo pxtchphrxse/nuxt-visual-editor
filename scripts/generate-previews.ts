@@ -1,6 +1,5 @@
 // Regenerates the library preview images by rendering each built-in component with the real
 // content stylesheet in Chromium. Usage: node scripts/generate-previews.ts
-// oxlint-disable no-await-in-loop -- one page renders the components one after another
 import { mkdtemp, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'

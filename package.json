@@ -32,12 +32,14 @@
     "format:check": "oxfmt --check",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "test": "pnpm test:unit && pnpm test:e2e",
-    "test:unit": "vitest run --project unit",
+    "test:unit": "vitest run --project unit --coverage",
     "test:e2e": "vitest run --project e2e",
     "test:smoke": "vitest run --project smoke",
     "audit:deps": "pnpm audit && node scripts/check-deprecated.ts",
     "release": "pnpm lint && pnpm typecheck && pnpm test && pnpm prepack && changelogen --release && pnpm publish && git push --follow-tags",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:fixtures:nuxt3": "pnpm --dir test/fixtures/nuxt3 install",
+    "previews": "node scripts/generate-previews.ts"
   },
   "dependencies": {
     "@nuxt/kit": "^3.21.0 || ^4.0.0",
@@ -48,13 +50,10 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@nuxt/schema": "^4.5.2",
-    "@nuxt/test-utils": "^4.3.2",
-    "@playwright/test": "^1.63.0",
     "@types/jsdom": "^30.0.0",
     "@types/node": "^24.13.6",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vitest/coverage-v8": "^5.0.1",
-    "@vue/test-utils": "^2.5.1",
     "changelogen": "^0.6.2",
     "cssnano": "^9.0.5",
     "happy-dom": "^20.14.5",

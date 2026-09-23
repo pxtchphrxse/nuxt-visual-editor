@@ -14,12 +14,22 @@ import VeIcon from './ui/VeIcon.vue'
 
 const editor = useEditor()
 
+// Panels are keyed by element so each selection starts with fresh panel state.
+const keys = new WeakMap<HTMLElement, number>()
+let nextKey = 0
+const keyOf = (el: HTMLElement) => {
+  if (!keys.has(el)) keys.set(el, nextKey++)
+  return keys.get(el)!
+}
+
 const info = computed(() => {
   void editor.revision.value
   const el = editor.selected.value
   if (!el) return null
   const parent = el.parentElement?.closest('section[data-ve-id]') ? el.parentElement : null
   return {
+    el,
+    key: keyOf(el),
     tag: el.tagName.toLowerCase(),
     image: isImage(el),
     text: isTextElement(el),
@@ -58,15 +68,15 @@ const info = computed(() => {
           </button>
         </div>
       </header>
-      <div class="ve-inspector__panels">
-        <ImagePanel v-if="info.image" />
-        <TextPanel v-if="info.text" />
-        <LinkPanel v-if="info.link" />
-        <TypographyPanel />
-        <ColorPanel />
-        <SpacingPanel />
-        <BorderPanel />
-        <ClassPanel />
+      <div :key="info.key" class="ve-inspector__panels">
+        <ImagePanel v-if="info.image" :el="info.el as HTMLImageElement" />
+        <TextPanel v-if="info.text" :el="info.el" />
+        <LinkPanel v-if="info.link" :el="info.el" />
+        <TypographyPanel :el="info.el" />
+        <ColorPanel :el="info.el" />
+        <SpacingPanel :el="info.el" />
+        <BorderPanel :el="info.el" />
+        <ClassPanel :el="info.el" />
       </div>
     </template>
     <p v-else class="ve-inspector__empty">Select an element in the canvas to edit it.</p>

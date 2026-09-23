@@ -4,24 +4,19 @@ import { getText, setText } from '#visual-editor/core/document'
 import { useEditor } from '../../context'
 import VePanel from '../ui/VePanel.vue'
 
+const props = defineProps<{ el: HTMLElement }>()
 const editor = useEditor()
-const text = ref('')
+const text = ref(getText(props.el))
 const textarea = ref<HTMLTextAreaElement>()
 const id = useId()
 
-watch(
-  [editor.selected, editor.revision],
-  () => {
-    // Do not overwrite what the user is typing.
-    if (editor.selected.value && document.activeElement !== textarea.value)
-      text.value = getText(editor.selected.value)
-  },
-  { immediate: true },
-)
+// Pick up changes made elsewhere (e.g. sanitization), but never overwrite what is being typed.
+watch(editor.revision, () => {
+  if (document.activeElement !== textarea.value) text.value = getText(props.el)
+})
 
 function onInput() {
-  const el = editor.selected.value
-  if (el) editor.mutate(() => setText(el, text.value))
+  editor.mutate(() => setText(props.el, text.value))
 }
 </script>
 

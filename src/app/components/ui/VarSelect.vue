@@ -3,8 +3,8 @@ import { useId } from 'vue'
 import type { StyleVar } from '../../../runtime/core/schema'
 import { useVarModel, type Option } from '../../composables'
 
-const props = defineProps<{ label: string; name: StyleVar; options: Option[] }>()
-const model = useVarModel(props.name)
+const props = defineProps<{ el: HTMLElement; label: string; name: StyleVar; options: Option[] }>()
+const model = useVarModel(props.el, props.name)
 const id = useId()
 </script>
 

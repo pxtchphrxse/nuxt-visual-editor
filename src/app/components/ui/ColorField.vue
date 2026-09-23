@@ -6,9 +6,9 @@ import { useVarModel } from '../../composables'
 import { useEditor } from '../../context'
 import VeIcon from './VeIcon.vue'
 
-const props = defineProps<{ label: string; name: StyleVar }>()
+const props = defineProps<{ el: HTMLElement; label: string; name: StyleVar }>()
 const editor = useEditor()
-const model = useVarModel(props.name)
+const model = useVarModel(props.el, props.name)
 const hex = ref('')
 const invalid = ref(false)
 const id = useId()

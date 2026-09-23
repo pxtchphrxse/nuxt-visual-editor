@@ -8,11 +8,11 @@ const editor = useEditor()
 const pendingDelete = ref<string | null>(null)
 let hovered: Element | null = null
 
+/** The content element under a pointer event, or null outside section content. */
 function contentElement(target: EventTarget | null): HTMLElement | null {
-  const el = target instanceof Element ? target : null
-  const content = el?.closest('.ve-section__content')
-  if (!el || !content || el === content) return null
-  return el as HTMLElement
+  const el = target as HTMLElement
+  const content = el.closest('.ve-section__content')
+  return content && el !== content ? el : null
 }
 
 function onPointerOver(event: PointerEvent) {
@@ -57,6 +57,7 @@ function confirmDelete() {
       class="ve-canvas"
       :class="editor.config.containerClass"
       data-testid="canvas"
+      tabindex="-1"
       @pointerover="onPointerOver"
       @pointerleave="onPointerLeave"
       @click="onClick"
@@ -113,6 +114,10 @@ function confirmDelete() {
 
 .ve-canvas {
   min-height: 100%;
+  // Focusable (tabindex=-1) so clicks move focus into the editor and Escape reaches it.
+  &:focus {
+    outline: none;
+  }
   margin: 0 auto;
   background: #fff;
   color: #111827;

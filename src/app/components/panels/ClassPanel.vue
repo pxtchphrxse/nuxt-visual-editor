@@ -5,6 +5,7 @@ import { useEditor } from '../../context'
 import VeIcon from '../ui/VeIcon.vue'
 import VePanel from '../ui/VePanel.vue'
 
+const props = defineProps<{ el: HTMLElement }>()
 const editor = useEditor()
 const name = ref('')
 const error = ref('')
@@ -12,7 +13,7 @@ const id = useId()
 
 const classes = computed(() => {
   void editor.revision.value
-  return editor.selected.value ? customClasses(editor.selected.value) : []
+  return customClasses(props.el)
 })
 
 const MESSAGES = {
@@ -22,8 +23,8 @@ const MESSAGES = {
 } as const
 
 function add() {
-  const el = editor.selected.value
-  if (!el || !name.value.trim()) return
+  const el = props.el
+  if (!name.value.trim()) return
   let result: ReturnType<typeof addClass> = 'ok'
   editor.mutate(() => {
     result = addClass(el, name.value)
@@ -33,8 +34,7 @@ function add() {
 }
 
 function remove(cls: string) {
-  const el = editor.selected.value
-  if (el) editor.mutate(() => removeClass(el, cls))
+  editor.mutate(() => removeClass(props.el, cls))
 }
 </script>
 

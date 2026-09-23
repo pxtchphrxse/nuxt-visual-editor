@@ -4,13 +4,11 @@
 // from `section.html` and then edited in place. `section.html` is only replaced (and the section
 // re-rendered via `epoch`) when content is loaded or when the sanitizer changes something, so the
 // selection and DOM identity survive ordinary edits.
-import { computed, inject, provide, ref, shallowRef, type InjectionKey } from 'vue'
+import { inject, provide, ref, shallowRef, type InjectionKey } from 'vue'
 import {
   instantiateComponent,
   parseSections,
-  readVars,
   serializeSection,
-  type ElementVars,
   type SectionModel,
 } from '#visual-editor/core/document'
 import { isV1Content, migrateV1 } from '#visual-editor/core/migrate-v1'
@@ -175,11 +173,6 @@ export function createEditor(
   const previewHtml = () =>
     sections.value.map((s) => sanitizeVisualContentDetailed(currentHtml(s)).html).join('\n')
 
-  const vars = computed<ElementVars | null>(() => {
-    void revision.value
-    return selected.value ? readVars(selected.value) : null
-  })
-
   return {
     config,
     assetsBase,
@@ -188,7 +181,6 @@ export function createEditor(
     selected,
     revision,
     lastDeleted,
-    vars,
     select,
     mutate,
     load,

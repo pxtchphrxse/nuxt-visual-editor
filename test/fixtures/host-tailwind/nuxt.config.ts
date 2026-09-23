@@ -1,9 +1,12 @@
+// A host that already uses Tailwind CSS v4 (via @tailwindcss/vite) must keep working unchanged.
 import { inputSourcemaps } from '../shared/input-sourcemaps'
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
   extends: ['../shared'],
   modules: ['nuxt-visual-editor'],
-  visualEditor: { mode: 'styles', containerClass: 'article-body' },
+  css: ['~/assets/main.css'],
+  vite: { plugins: [tailwindcss(), inputSourcemaps()] },
   sourcemap: { client: true, server: false },
-  vite: { plugins: [inputSourcemaps()] },
   compatibilityDate: '2026-09-01',
 })

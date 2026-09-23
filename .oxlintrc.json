@@ -18,7 +18,11 @@
       "files": ["test/**", "build/**", "scripts/**"],
       "rules": {
         "no-console": "off",
-        "vitest/valid-expect": ["error", { "maxArgs": 2 }]
+        "vitest/valid-expect": ["error", { "maxArgs": 2 }],
+        "no-await-in-loop": "off",
+        "unicorn/prefer-dom-node-text-content": "off",
+        "no-underscore-dangle": "off",
+        "vitest/expect-expect": ["error", { "assertFunctionNames": ["expect", "expectModel"] }]
       }
     }
   ]
