@@ -1,5 +1,10 @@
+set -e
+# Re-stage only what was staged before formatting (never resurrect deleted paths).
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
 pnpm exec oxlint --fix --deny-warnings
 pnpm exec oxfmt
 # Formatting can change template code, so the package must still build afterwards.
 pnpm build
-git update-index --again
+if [ -n "$staged" ]; then
+  echo "$staged" | xargs git add --
+fi
