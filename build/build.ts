@@ -94,6 +94,8 @@ await step('app components', () =>
     root,
     logLevel: 'warn',
     plugins: [vue()],
+    // Components `@use 'editor/mixins'` from src/styles.
+    css: { preprocessorOptions: { scss: { loadPaths: [r('src/styles')] } } },
     build: {
       outDir: 'dist/app',
       emptyOutDir: false,
