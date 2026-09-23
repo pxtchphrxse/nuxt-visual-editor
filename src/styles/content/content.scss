@@ -73,6 +73,12 @@ $vars: (
     height: auto;
   }
 
+  // Links take the colour of their text so the text colour control applies to them.
+  :where(a) {
+    color: inherit;
+    text-decoration: underline;
+  }
+
   // Layout -------------------------------------------------------------------------------------
   :where(.wrap) {
     width: 100%;
