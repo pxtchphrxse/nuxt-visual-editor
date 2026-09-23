@@ -1,61 +1,80 @@
 {
   "name": "nuxt-visual-editor",
-  "version": "0.1.5",
-  "description": "Visual Editor for Nuxt",
-  "repository": "pxtchphrxse/nuxt-visual-editor",
+  "version": "2.0.0-rc.0",
+  "description": "Visual (layout) editor for Nuxt",
   "license": "MIT",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
-    }
-  },
-  "main": "./dist/module.cjs",
-  "types": "./dist/types.d.ts",
+  "repository": "pxtchphrxse/nuxt-visual-editor",
   "files": [
     "dist"
   ],
+  "type": "module",
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
   "scripts": {
-    "prepack": "nuxt-module-build build",
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
+    "build": "node build/build.ts",
+    "prepack": "pnpm build",
+    "dev": "node build/build.ts && nuxi dev playground",
+    "dev:prepare": "node build/build.ts && nuxi prepare playground",
+    "lint": "oxlint --deny-warnings",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test": "pnpm test:unit && pnpm test:e2e",
+    "test:unit": "vitest run --project unit",
+    "test:e2e": "vitest run --project e2e",
+    "test:smoke": "vitest run --project smoke",
+    "audit:deps": "pnpm audit && node scripts/check-deprecated.ts",
+    "release": "pnpm lint && pnpm typecheck && pnpm test && pnpm prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "prepare": "husky"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.23",
-    "@heroicons/vue": "^2.1.5",
-    "@nuxt/kit": "^3.13.2",
-    "@nuxtjs/tailwindcss": "^6.12.1",
-    "defu": "^6.1.4",
-    "pathe": "^1.1.2",
-    "uuid": "^10.0.0"
+    "@nuxt/kit": "^3.21.0 || ^4.0.0",
+    "dompurify": "^3.4.15",
+    "jsdom": "^30.1.1",
+    "reka-ui": "^2.10.5"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.5.0",
-    "@nuxt/eslint-config": "^0.5.7",
-    "@nuxt/module-builder": "^0.8.4",
-    "@nuxt/schema": "^3.13.2",
-    "@nuxt/test-utils": "^3.14.2",
-    "@tailwindcss/forms": "^0.5.9",
-    "@types/node": "latest",
-    "@types/uuid": "^10.0.0",
-    "autoprefixer": "^10.4.20",
-    "changelogen": "^0.5.7",
-    "eslint": "^9.11.0",
-    "husky": "^9.1.6",
-    "nuxt": "3.18.1",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13",
-    "typescript": "latest",
-    "vitest": "^2.1.1",
-    "vue-tsc": "^2.1.6"
-  }
+    "@axe-core/playwright": "^4.13.0",
+    "@nuxt/schema": "^4.5.2",
+    "@nuxt/test-utils": "^4.3.2",
+    "@playwright/test": "^1.63.0",
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^24.13.6",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vitest/coverage-v8": "^5.0.1",
+    "@vue/test-utils": "^2.5.1",
+    "changelogen": "^0.6.2",
+    "cssnano": "^9.0.5",
+    "happy-dom": "^20.14.5",
+    "husky": "^9.1.7",
+    "monocart-coverage-reports": "^2.13.0",
+    "nuxt": "^4.5.2",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
+    "playwright-core": "^1.63.0",
+    "postcss": "^8.5.28",
+    "postcss-preset-env": "^11.5.3",
+    "sass": "^1.105.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1",
+    "vue": "^3.5.43",
+    "vue-tsc": "^3.3.11"
+  },
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "packageManager": "pnpm@12.6.0"
 }

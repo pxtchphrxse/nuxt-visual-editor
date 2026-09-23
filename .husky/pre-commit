@@ -1,1 +1,3 @@
-npm run lint --fix
+pnpm exec oxlint --fix --deny-warnings
+pnpm exec oxfmt
+git update-index --again

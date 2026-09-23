@@ -1,0 +1,9 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  vue-demi: true
+minimumReleaseAgeExclude:
+  - sass@1.105.0
+overrides:
+  # archiver-utils (via nitropack) still asks for deprecated glob@10; glob@13 keeps the same CJS `sync` API.
+  glob: ^13.0.6

@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import", "vue", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "env": { "browser": true, "node": true, "es2024": true },
+  "ignorePatterns": ["dist", "**/.nuxt", "**/.output", "coverage", "test/fixtures/**/node_modules"],
+  "rules": {
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "typescript/no-explicit-any": "error",
+    "unicorn/prefer-dom-node-text-content": "error"
+  },
+  "overrides": [
+    {
+      "files": ["test/**", "build/**", "scripts/**"],
+      "rules": { "no-console": "off" }
+    }
+  ]
+}

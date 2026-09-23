@@ -38,21 +38,21 @@ yarn add nuxt-visual-editor
 
 ```typescript
 export default defineNuxtConfig({
-  modules: ["nuxt-visual-editor"],
+  modules: ['nuxt-visual-editor'],
   // default options
   visualEditor: {
     image_providers: { base64: true },
     theme: {
-      myPrimaryBrandColor: "#000000",
-      myPrimaryLinkColor: "#2563eb",
-      myPrimaryLightGrayColor: "#e2e8f0",
-      myPrimaryMediumGrayColor: "#9ca3af",
-      myPrimaryDarkGrayColor: "#111827",
-      myPrimaryErrorColor: "#d60000",
-      myPrimarySuccesColor: "#16a34a",
+      myPrimaryBrandColor: '#000000',
+      myPrimaryLinkColor: '#2563eb',
+      myPrimaryLightGrayColor: '#e2e8f0',
+      myPrimaryMediumGrayColor: '#9ca3af',
+      myPrimaryDarkGrayColor: '#111827',
+      myPrimaryErrorColor: '#d60000',
+      myPrimarySuccesColor: '#16a34a',
     },
   },
-});
+})
 ```
 
 To avoid seeing warnings from Vue about a mismatch in content, you'll need to wrap the `VisualEditor` component with the `ClientOnly` component `Nuxt` provides as shown here:
@@ -95,30 +95,26 @@ To avoid seeing warnings from Vue about a mismatch in content, you'll need to wr
 ```vue
 <template>
   <ClientOnly>
-    <VisualEditor
-      v-model="html"
-      :components="components"
-      :categories="categories"
-    />
+    <VisualEditor v-model="html" :components="components" :categories="categories" />
   </ClientOnly>
 </template>
 
 <script setup lang="ts">
-const html = ref("");
+const html = ref('')
 const components = ref([
   {
-    name: "paragraphs",
-    category: "text",
-    imageSrc: "paragraphs.png",
+    name: 'paragraphs',
+    category: 'text',
+    imageSrc: 'paragraphs.png',
     html: '<section class="text-gray-500"> <p>Paragraph 1</p> <p>Paragraph 2</p> <p>Paragraph 3</p> </section>',
   },
   {
-    name: "avatar",
-    category: "image",
-    imageSrc: "avatar.png",
+    name: 'avatar',
+    category: 'image',
+    imageSrc: 'avatar.png',
     html: '<section> <img class="aspect-square" alt="" src="placeholder_image.jpg" > </section>',
   },
-]);
+])
 </script>
 ```
 
@@ -133,30 +129,30 @@ const components = ref([
 
 <details>
   <summary>Local development</summary>
-  
-  ```bash
-  # Install dependencies
-  npm install
-  
-  # Generate type stubs
-  npm run dev:prepare
-  
-  # Develop with the playground
-  npm run dev
-  
-  # Build the playground
-  npm run dev:build
-  
-  # Run ESLint
-  npm run lint
-  
-  # Run Vitest
-  npm run test
-  npm run test:watch
-  
-  # Release new version
-  npm run release
-  ```
+
+```bash
+# Install dependencies
+npm install
+
+# Generate type stubs
+npm run dev:prepare
+
+# Develop with the playground
+npm run dev
+
+# Build the playground
+npm run dev:build
+
+# Run ESLint
+npm run lint
+
+# Run Vitest
+npm run test
+npm run test:watch
+
+# Release new version
+npm run release
+```
 
 </details>
 

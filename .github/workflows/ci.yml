@@ -2,44 +2,67 @@ name: ci
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, develop, v2]
   pull_request:
-    branches:
-      - main
+    branches: [main, develop, v2]
+
+permissions:
+  contents: read
 
 jobs:
-  lint:
+  quality:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npx nypm@latest i
-
-      - name: Lint
-        run: npm run lint
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm audit:deps
+      - run: pnpm build
+      - run: pnpm typecheck
 
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+        nuxt: ['3', '4']
+    env:
+      VE_NUXT_MAJOR: ${{ matrix.nuxt }}
     steps:
-      - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright-core install --with-deps chromium
+      - run: pnpm build
+      - run: pnpm test:unit
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: coverage-node${{ matrix.node }}-nuxt${{ matrix.nuxt }}
+          path: coverage-e2e/
+          if-no-files-found: ignore
 
-      - name: Install dependencies
-        run: npx nypm@latest i
-
-      - name: Playground prepare
-        run: npm run dev:prepare
-
-      - name: Test
-        run: npm run test
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test:smoke

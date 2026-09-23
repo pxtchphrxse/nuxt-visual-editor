@@ -1,6 +1,6 @@
 {
-  "private": true,
   "name": "nuxt-visual-editor-playground",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "nuxi dev",

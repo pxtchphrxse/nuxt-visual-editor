@@ -54,3 +54,9 @@ coverage
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# v2 test artifacts
+test-results
+playwright-report
+coverage-e2e
+*.tgz

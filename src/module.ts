@@ -59,7 +59,10 @@ export default defineNuxtModule<ModuleOptions>({
       })
     })
 
-    addComponent({ filePath: resolve('./runtime/components/VisualEditor.vue'), name: 'VisualEditor' })
+    addComponent({
+      filePath: resolve('./runtime/components/VisualEditor.vue'),
+      name: 'VisualEditor',
+    })
 
     nuxt.options.alias['#visual-editor'] = runtimeDir
   },
