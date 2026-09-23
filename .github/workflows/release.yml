@@ -1,0 +1,87 @@
+name: release
+
+# Publishes to npm when a version tag is pushed, e.g.:
+#   pnpm version 2.0.0-rc.1 && git push --follow-tags
+# Prereleases (versions with a `-`, like 2.0.0-rc.1) go to the `next` dist-tag, others to `latest`.
+#
+# Uses npm trusted publishing (OIDC): no npm token is stored in the repository. Configure it once on
+# npmjs.com -> nuxt-visual-editor -> Settings -> Trusted publisher: GitHub Actions,
+# repository `pxtchphrxse/nuxt-visual-editor`, workflow `release.yml`, environment `npm`.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    # Full CI (lint, types, audit, unit, e2e on Nuxt 3 + 4, packed-tarball smoke) must pass first.
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: ci
+    runs-on: ubuntu-latest
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/nuxt-visual-editor
+    permissions:
+      contents: write # create the GitHub release
+      id-token: write # npm trusted publishing + provenance
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Resolve version and dist-tag
+        id: version
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+          case "$version" in
+            *-*) echo "tag=next" >> "$GITHUB_OUTPUT"; echo "prerelease=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "tag=latest" >> "$GITHUB_OUTPUT"; echo "prerelease=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Refuse to republish an existing version
+        run: |
+          if npm view "nuxt-visual-editor@${{ steps.version.outputs.version }}" version >/dev/null 2>&1; then
+            echo "::error::nuxt-visual-editor@${{ steps.version.outputs.version }} is already on npm"
+            exit 1
+          fi
+
+      - name: Check npm supports trusted publishing (>= 11.5.1)
+        run: |
+          node -e "const [a,b,c]=process.argv[1].split('.').map(Number); process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)" "$(npm --version)" \
+            || npm install -g npm@11
+          npm --version
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - name: Show package contents
+        run: npm pack --dry-run --ignore-scripts
+
+      - name: Publish to npm
+        # Build scripts already ran above; skip prepack/prepare during publish.
+        run: npm publish --provenance --access public --tag "${{ steps.version.outputs.tag }}" --ignore-scripts
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes \
+            $([ "${{ steps.version.outputs.prerelease }}" = "true" ] && echo --prerelease)

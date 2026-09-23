@@ -177,6 +177,18 @@ pnpm previews        # regenerate library preview images
 
 The Nuxt 3 end-to-end run uses its own install: `pnpm test:fixtures:nuxt3 && VE_NUXT_MAJOR=3 pnpm test:e2e`.
 
+### Releasing
+
+Publishing happens in CI (`.github/workflows/release.yml`) when a version tag is pushed:
+
+```bash
+pnpm release                 # local checks
+npm version 2.0.0-rc.1       # bumps package.json, commits, tags v2.0.0-rc.1
+git push --follow-tags       # the release workflow runs full CI, then publishes
+```
+
+Prereleases (`x.y.z-rc.n`) are published under the `next` dist-tag, stable versions under `latest`. The workflow uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers) with provenance, so no npm token is stored in the repository.
+
 ## License
 
 MIT. Icons from [Heroicons](https://heroicons.com) (MIT). The v1 migrator embeds the Tailwind CSS v3 colour palette (MIT) to convert old content.

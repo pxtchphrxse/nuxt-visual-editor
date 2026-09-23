@@ -5,6 +5,8 @@ on:
     branches: [main, develop, v2]
   pull_request:
     branches: [main, develop, v2]
+  # Reused by release.yml as the gate before publishing.
+  workflow_call:
 
 permissions:
   contents: read

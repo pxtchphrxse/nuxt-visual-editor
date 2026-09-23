@@ -40,7 +40,7 @@
     "test:e2e": "vitest run --project e2e",
     "test:smoke": "vitest run --project smoke",
     "audit:deps": "pnpm audit && node scripts/check-deprecated.ts",
-    "release": "pnpm lint && pnpm typecheck && pnpm test && pnpm prepack && changelogen --release && pnpm publish && git push --follow-tags",
+    "release": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm audit:deps && echo 'Checks passed. Tag a version (npm version <x>) and git push --follow-tags; the release workflow publishes.'",
     "prepare": "husky",
     "test:fixtures:nuxt3": "pnpm --dir test/fixtures/nuxt3 install",
     "previews": "node scripts/generate-previews.ts"
