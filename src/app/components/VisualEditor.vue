@@ -71,6 +71,11 @@ function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape' && editor.selected.value && !previewOpen.value) editor.select(null)
 }
 
+function openPreview() {
+  editor.flush()
+  previewOpen.value = true
+}
+
 defineExpose({ flush: editor.flush })
 </script>
 
@@ -94,15 +99,7 @@ defineExpose({ flush: editor.flush })
         <VeIcon name="layers" />
       </button>
       <span class="ve-toolbar__spacer" />
-      <button
-        type="button"
-        class="ve-icon-button"
-        aria-label="Preview"
-        @click="
-          editor.flush()
-          previewOpen = true
-        "
-      >
+      <button type="button" class="ve-icon-button" aria-label="Preview" @click="openPreview">
         <VeIcon name="eye" />
       </button>
       <button

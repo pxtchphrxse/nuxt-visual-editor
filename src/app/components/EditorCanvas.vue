@@ -36,6 +36,10 @@ function onClick(event: MouseEvent) {
   editor.select(el)
 }
 
+function onDialogOpen(open: boolean) {
+  if (!open) pendingDelete.value = null
+}
+
 function confirmDelete() {
   if (pendingDelete.value) editor.removeSection(pendingDelete.value)
   pendingDelete.value = null
@@ -86,11 +90,7 @@ function confirmDelete() {
       :open="pendingDelete !== null"
       title="Delete section?"
       description="The section is removed from the page. You can undo this right after."
-      @update:open="
-        (open) => {
-          if (!open) pendingDelete = null
-        }
-      "
+      @update:open="onDialogOpen"
     >
       <template #footer>
         <button type="button" class="ve-button" @click="pendingDelete = null">Cancel</button>

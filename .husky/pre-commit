@@ -1,3 +1,5 @@
 pnpm exec oxlint --fix --deny-warnings
 pnpm exec oxfmt
+# Formatting can change template code, so the package must still build afterwards.
+pnpm build
 git update-index --again
