@@ -1,8 +1,8 @@
 # Changelog
 
-## 2.0.0-rc.0
+## 2.0.0-rc.1
 
-A rewrite. See [MIGRATION.md](./MIGRATION.md) for upgrading from 0.1.x.
+First v2 release candidate (2.0.0-rc.0 was never published). A rewrite. See [MIGRATION.md](./MIGRATION.md) for upgrading from 0.1.x.
 
 ### Breaking changes
 
@@ -33,6 +33,7 @@ A rewrite. See [MIGRATION.md](./MIGRATION.md) for upgrading from 0.1.x.
 - pnpm 12, Vite 8, oxlint + oxfmt (ESLint removed), Vitest 5, Playwright; `@nuxt/module-builder` replaced by a Vite build.
 - 0 known vulnerabilities and 0 deprecated packages, enforced in CI (`pnpm audit:deps`).
 - Unit (100% coverage), end-to-end (browser coverage gate) and packed-tarball smoke tests on Nuxt 3.21 and 4.5.
+- Releases are published from CI on version tags with npm trusted publishing and provenance.
 
 ## 0.1.5
 
