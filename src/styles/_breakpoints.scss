@@ -1,0 +1,14 @@
+// Keep in sync with BREAKPOINTS in src/runtime/core/schema.ts (checked by unit tests).
+@use 'sass:map';
+
+$breakpoints: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+);
+
+@mixin up($name) {
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}

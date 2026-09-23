@@ -1,0 +1,206 @@
+// Saved-content vocabulary. Every rule is scoped under the container sentinel, which the
+// module replaces with the configured `containerClass`; nothing here can reach host markup.
+@use '../breakpoints' as bp;
+@use 'tokens';
+
+$c: '.__ve_container__';
+
+// Vocabulary variables are reset on every descendant so a value only ever applies to the element
+// whose inline style sets it (custom properties would otherwise inherit into children).
+$vars: (
+  --pad-y,
+  --pad-x,
+  --mar-y,
+  --mar-x,
+  --bg,
+  --bg-a,
+  --fg,
+  --op,
+  --fs,
+  --fs-sm,
+  --fs-md,
+  --fs-lg,
+  --fw,
+  --ff,
+  --fst,
+  --ta,
+  --lh,
+  --bd-s,
+  --bd-w,
+  --bd-c,
+  --r,
+  --r-tl,
+  --r-tr,
+  --r-br,
+  --r-bl,
+  --max,
+  --gap,
+  --cols,
+  --cols-sm,
+  --cols-md,
+  --cols-lg,
+  --span,
+  --span-md,
+  --span-lg,
+  --justify,
+  --align,
+  --h,
+  --fit
+);
+
+#{$c} {
+  --ve-font-sans: #{tokens.$font-sans};
+  --ve-font-serif: #{tokens.$font-serif};
+  --ve-font-mono: #{tokens.$font-mono};
+
+  &,
+  :where(*, *::before, *::after) {
+    box-sizing: border-box;
+  }
+
+  :where(*) {
+    @each $var in $vars {
+      #{$var}: initial;
+    }
+  }
+
+  :where(section) {
+    display: block;
+  }
+
+  :where(img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  // Layout -------------------------------------------------------------------------------------
+  :where(.wrap) {
+    width: 100%;
+    max-width: var(--max, 80rem);
+    margin-inline: auto;
+  }
+
+  :where(.stack) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap, 0);
+    align-items: var(--align, stretch);
+    justify-content: var(--justify, start);
+  }
+
+  :where(.row) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap, 0);
+    align-items: var(--align, center);
+    justify-content: var(--justify, start);
+  }
+
+  :where(.grid) {
+    display: grid;
+    gap: var(--gap, 0);
+    grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr));
+
+    @include bp.up(sm) {
+      grid-template-columns: repeat(var(--cols-sm, var(--cols, 1)), minmax(0, 1fr));
+    }
+    @include bp.up(md) {
+      grid-template-columns: repeat(var(--cols-md, var(--cols-sm, var(--cols, 1))), minmax(0, 1fr));
+    }
+    @include bp.up(lg) {
+      grid-template-columns: repeat(
+        var(--cols-lg, var(--cols-md, var(--cols-sm, var(--cols, 1)))),
+        minmax(0, 1fr)
+      );
+    }
+  }
+
+  :where(.span) {
+    grid-column: span var(--span, 1) / span var(--span, 1);
+
+    @include bp.up(md) {
+      grid-column: span var(--span-md, var(--span, 1)) / span var(--span-md, var(--span, 1));
+    }
+    @include bp.up(lg) {
+      grid-column: span var(--span-lg, var(--span-md, var(--span, 1))) / span
+        var(--span-lg, var(--span-md, var(--span, 1)));
+    }
+  }
+
+  :where(.img) {
+    display: block;
+    width: 100%;
+    height: var(--h, auto);
+    object-fit: var(--fit, cover);
+  }
+
+  // Editable properties (after layout so explicit spacing wins) -------------------------------
+  :where(.pad) {
+    padding-block: var(--pad-y, 0);
+    padding-inline: var(--pad-x, 0);
+  }
+
+  :where(.mar) {
+    margin-block: var(--mar-y, 0);
+    margin-inline: var(--mar-x, 0);
+  }
+
+  :where(.bg) {
+    background-color: color-mix(
+      in srgb,
+      var(--bg, transparent) calc(var(--bg-a, 1) * 100%),
+      transparent
+    );
+  }
+
+  :where(.fg) {
+    color: var(--fg);
+  }
+
+  :where(.op) {
+    opacity: var(--op, 1);
+  }
+
+  :where(.fs) {
+    font-size: var(--fs);
+
+    @include bp.up(sm) {
+      font-size: var(--fs-sm, var(--fs));
+    }
+    @include bp.up(md) {
+      font-size: var(--fs-md, var(--fs-sm, var(--fs)));
+    }
+    @include bp.up(lg) {
+      font-size: var(--fs-lg, var(--fs-md, var(--fs-sm, var(--fs))));
+    }
+  }
+
+  :where(.fw) {
+    font-weight: var(--fw);
+  }
+
+  :where(.ff) {
+    font-family: var(--ff);
+  }
+
+  :where(.fst) {
+    font-style: var(--fst);
+  }
+
+  :where(.ta) {
+    text-align: var(--ta);
+  }
+
+  :where(.lh) {
+    line-height: var(--lh);
+  }
+
+  :where(.bd) {
+    border: var(--bd-w, 1px) var(--bd-s, solid) var(--bd-c, currentColor);
+  }
+
+  :where(.rad) {
+    border-radius: var(--r-tl, var(--r, 0)) var(--r-tr, var(--r, 0)) var(--r-br, var(--r, 0))
+      var(--r-bl, var(--r, 0));
+  }
+}

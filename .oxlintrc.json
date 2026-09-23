@@ -16,7 +16,10 @@
   "overrides": [
     {
       "files": ["test/**", "build/**", "scripts/**"],
-      "rules": { "no-console": "off" }
+      "rules": {
+        "no-console": "off",
+        "vitest/valid-expect": ["error", { "maxArgs": 2 }]
+      }
     }
   ]
 }

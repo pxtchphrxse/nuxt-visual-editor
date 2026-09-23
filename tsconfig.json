@@ -1,10 +1,27 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
+  // Type-checks module + runtime + build tooling + tests. Nuxt virtual modules (#app, #imports)
+  // are typed through the playground's generated types (`pnpm dev:prepare` creates them).
   "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "allowImportingTsExtensions": true,
-    "types": ["node"]
+    "noImplicitOverride": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "types": ["node"],
+    "paths": {
+      "#app": ["./node_modules/nuxt/dist/app/index"],
+      "#imports": ["./src/types/nuxt-imports.d.ts"]
+    }
   },
+  "include": ["src", "build", "scripts", "test", "*.config.ts"],
   "exclude": ["dist", "node_modules", "playground", "test/fixtures", "coverage"]
 }
