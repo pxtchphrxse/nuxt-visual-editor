@@ -188,9 +188,9 @@ describe('custom classes', () => {
     expect(await h2.getAttribute('class')).toBe('hero-title')
     expect(await input.inputValue()).toBe('')
 
-    await input.fill('1bad')
+    await input.fill('bad"name')
     await input.press('Enter')
-    expect((await error.textContent())?.trim()).toContain('valid CSS identifiers')
+    expect((await error.textContent())?.trim()).toContain('cannot contain spaces, quotes')
     await input.fill('pad')
     await input.press('Enter')
     expect((await error.textContent())?.trim()).toBe(

@@ -107,7 +107,11 @@ await step('app components', () =>
       cssCodeSplit: false,
       lib: {
         formats: ['es'],
-        entry: { editor: r('src/app/editor.ts'), content: r('src/app/content.ts') },
+        entry: {
+          editor: r('src/app/editor.ts'),
+          content: r('src/app/content.ts'),
+          library: r('src/app/library.ts'),
+        },
         cssFileName: 'editor',
       },
       rollupOptions: {

@@ -119,8 +119,15 @@ export function isValidVarValue(name: string, value: string): boolean {
   return isStyleVar(name) && STYLE_VARS[name](value.trim())
 }
 
-/** CSS identifiers usable as custom class names or the container class. */
+/** CSS identifiers (used in selectors, e.g. the container class). */
 export const CSS_IDENT = /^-?[_a-z][\w-]*$/i
+
+/**
+ * Class tokens allowed in content. Any non-whitespace token is a valid HTML class (Tailwind's
+ * `lg:px-8`, `w-1/2`, `max-w-[20rem]` included); quotes, angle brackets, backticks and
+ * backslashes are refused.
+ */
+export const CLASS_NAME = /^[^\s"'<>`\\]{1,100}$/
 
 /** Markers written by the editor into saved sections. */
 export const SECTION_ID_ATTR = 'data-ve-id'

@@ -1,5 +1,5 @@
 import type { Config, DOMPurify } from 'dompurify'
-import { CSS_IDENT, VOCABULARY_CLASSES, isValidVarValue } from './schema'
+import { CLASS_NAME, VOCABULARY_CLASSES, isValidVarValue } from './schema'
 import { isSafeUrl } from './url'
 
 export interface SanitizeChange {
@@ -16,7 +16,7 @@ export interface SanitizeResult {
 }
 
 export interface SanitizeOptions {
-  /** Keep classes outside the v2 vocabulary (still restricted to valid CSS identifiers). Default: true. */
+  /** Keep classes outside the v2 vocabulary (still restricted to safe class tokens). Default: true. */
   allowCustomClasses?: boolean
 }
 
@@ -101,7 +101,7 @@ export function filterStyle(style: string): { style: string; dropped: string[] }
   return { style: kept.join(' '), dropped }
 }
 
-/** Keeps valid CSS identifiers (optionally only vocabulary classes), de-duplicated in order. */
+/** Keeps valid class tokens (optionally only vocabulary classes), de-duplicated in order. */
 export function filterClasses(
   value: string,
   allowCustom: boolean,
@@ -110,7 +110,7 @@ export function filterClasses(
   const dropped: string[] = []
   for (const cls of value.split(/\s+/)) {
     if (!cls || kept.includes(cls)) continue
-    if (CSS_IDENT.test(cls) && (allowCustom || VOCABULARY_CLASSES.includes(cls))) kept.push(cls)
+    if (CLASS_NAME.test(cls) && (allowCustom || VOCABULARY_CLASSES.includes(cls))) kept.push(cls)
     else dropped.push(cls)
   }
   return { value: kept.join(' '), dropped }

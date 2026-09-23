@@ -69,10 +69,12 @@ async function createApp(dir: string, nuxt: string, manager: 'npm' | 'pnpm') {
   await writeFile(
     join(dir, 'app/app.vue'),
     `<script setup>
+import { DEFAULT_COMPONENTS } from 'nuxt-visual-editor/library'
 const html = ref('<section data-ve-id="s" data-ve-v="2" class="pad" style="--pad-y: 1rem;"><p>Smoke</p><img src="x" onerror="alert(1)"></section>')
+const library = DEFAULT_COMPONENTS.filter((c) => c.category === 'headers')
 </script>
 <template>
-  <VisualEditor v-model="html" />
+  <VisualEditor v-model="html" :components="library" />
   <VisualEditorContent id="out" :html="html" />
 </template>\n`,
   )

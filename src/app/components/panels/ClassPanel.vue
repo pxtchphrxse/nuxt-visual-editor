@@ -17,7 +17,7 @@ const classes = computed(() => {
 })
 
 const MESSAGES = {
-  invalid: 'Class names must be valid CSS identifiers (letters, digits, - and _).',
+  invalid: 'Class names cannot contain spaces, quotes, angle brackets, backticks or backslashes.',
   reserved: 'That class is managed by the editor controls.',
   exists: 'The element already has that class.',
 } as const

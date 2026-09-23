@@ -4,7 +4,7 @@ import {
   CLASS_OF_VAR,
   CLASS_VARS,
   CONTENT_VERSION,
-  CSS_IDENT,
+  CLASS_NAME,
   SECTION_ID_ATTR,
   SECTION_VERSION_ATTR,
   STYLE_VARS,
@@ -87,7 +87,7 @@ export type ClassResult = 'ok' | 'invalid' | 'reserved' | 'exists'
 
 export function addClass(el: HTMLElement, cls: string): ClassResult {
   const name = cls.trim()
-  if (!CSS_IDENT.test(name)) return 'invalid'
+  if (!CLASS_NAME.test(name)) return 'invalid'
   if (VOCABULARY_CLASSES.includes(name)) return 'reserved'
   if (el.classList.contains(name)) return 'exists'
   el.classList.add(name)

@@ -247,9 +247,9 @@ describe('filterStyle', () => {
 
 describe('filterClasses', () => {
   it('de-duplicates and rejects invalid identifiers', () => {
-    expect(filterClasses('pad pad 1bad ok-2 "x', true)).toEqual({
-      value: 'pad ok-2',
-      dropped: ['1bad', '"x'],
+    expect(filterClasses('pad pad 1bad lg:px-8 w-1/2 max-w-[20rem] "x a<b', true)).toEqual({
+      value: 'pad 1bad lg:px-8 w-1/2 max-w-[20rem]',
+      dropped: ['"x', 'a<b'],
     })
   })
 })

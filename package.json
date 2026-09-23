@@ -20,6 +20,10 @@
     ".": {
       "types": "./dist/types.d.mts",
       "import": "./dist/module.mjs"
+    },
+    "./library": {
+      "types": "./dist/app/library.d.ts",
+      "import": "./dist/app/library.js"
     }
   },
   "scripts": {
